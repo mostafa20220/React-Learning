@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./styles/index.css";
 import App from  "./App";
-import Stars from "./StarRating"
+import {StarRating} from "./components/StarRating"
 
 function Test() {
   const [rating, setRating] = React.useState(0);
   return (
     <div>
-      <Stars color="red" size={70} onSetRating={setRating}></Stars>
+      <StarRating color="red" size={70} onSetRating={setRating}></StarRating>
       <h3> You Chosed {rating} starts </h3>
     </div>
   )
