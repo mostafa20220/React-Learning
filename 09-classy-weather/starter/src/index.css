@@ -59,6 +59,33 @@ input:focus {
   outline: 2px solid #222;
 }
 
+button {
+  font-family: inherit;
+  color: inherit;
+  font-size: 2rem;
+  background-color: #f0d2ce;
+  padding: 1.6rem 3.2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.4rem ;
+}
+
+button:hover {
+  background-color: #ecc5c0;
+}
+
+button:focus {
+  outline: 2px solid #222;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #f0d2ce;
+}
+
 .weather {
   list-style: none;
   display: flex;
@@ -78,7 +105,7 @@ input:focus {
 }
 
 .day span {
-  font-size: 5.2rem;
+  font-size: 3.6rem;
 }
 
 .day.important {
