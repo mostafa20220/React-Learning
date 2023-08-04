@@ -53,7 +53,6 @@ export default class App extends React.Component {
         `https://geocoding-api.open-meteo.com/v1/search?name=${this.state.location}`
       );
       const geoData = await geoRes.json();
-      console.log("geoData: ", geoData);
 
       if (!geoData.results) throw new Error("Location not found");
 
@@ -69,7 +68,6 @@ export default class App extends React.Component {
       );
       const weatherData = await weatherRes.json();
       this.setState({ weatherDaily: weatherData.daily });
-      console.log("weatherData: ", weatherData.daily);
     } catch (err) {
       console.error(err);
       this.setState({ error: err.message });
