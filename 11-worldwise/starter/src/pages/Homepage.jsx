@@ -5,6 +5,7 @@ import PageNav from "../components/PageNav"
 import styles from "./Homepage.module.css";
 
 export default function Homepage() {
+
   return (
     <main className={styles.homepage}>
       <PageNav/>
@@ -20,7 +21,8 @@ export default function Homepage() {
           you have wandered the world.
         </h2>
 
-        <Link to='/app' className='cta' >Start Tracking Now  </Link>
+
+        <Link to='/login' className='cta' >Start Tracking Now  </Link>
       </section>
 
     </main>

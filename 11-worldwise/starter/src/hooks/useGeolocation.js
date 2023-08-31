@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function useGeolocation(cbSetPosition, defaultPosition = null) {
+function useGeolocation(cbOnSuccess, defaultPosition = null) {
   const [position, setPosition] = useState(defaultPosition);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -12,16 +12,15 @@ function useGeolocation(cbSetPosition, defaultPosition = null) {
     setIsLoading(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
         setPosition({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
+          lat,
+          lng
         });
         
-        if (cbSetPosition)
-          cbSetPosition({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          });
+        if (cbOnSuccess)
+          cbOnSuccess(lat, lng);
 
         setIsLoading(false);
       },

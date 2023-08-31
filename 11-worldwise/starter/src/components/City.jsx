@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 
 import styles from "./City.module.css";
 import button from "./Button.module.css";
-import { useCities } from "../contexts/citiesContext";
+import { useCities } from "../contexts/CitiesContext";
 import { useEffect } from "react";
 import Spinner from "./Spinner";
 import { BackButton } from "./BackButton";
@@ -18,11 +18,10 @@ const formatDate = (date) =>
 
 function City() {
   const { id } = useParams();
-  const {getCity,currentCity, isLoading} = useCities();
+  const { getCity, currentCity, isLoading } = useCities();
 
-  useEffect(()=>getCity(id),[id]);
+  useEffect(() => getCity(id), [id]);
 
-  
   const { cityName, emoji, date, notes } = currentCity;
 
   if (isLoading) return <Spinner />;
@@ -60,7 +59,7 @@ function City() {
       </div>
 
       <div>
-        <BackButton/>
+        <BackButton />
       </div>
     </div>
   );

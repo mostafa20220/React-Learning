@@ -12,7 +12,7 @@ import Spinner from "./Spinner";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import { useCities } from "../contexts/citiesContext";
+import { useCities } from "../contexts/CitiesContext";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -28,14 +28,14 @@ function Form() {
   const [date, setDate] = useState(new Date());
   const [notes, setNotes] = useState("");
   const [emoji, setEmoji] = useState("");
-  const [isReversedGeoPositionLoading, setIsReversedGeoPositionLoading] = useState(false);
+  const [isReversedGeoPositionLoading, setIsReversedGeoPositionLoading] =
+    useState(false);
   const [error, setError] = useState("");
-  
+
   const { addCity, isLoading: isCityLoading } = useCities();
 
   const [lat, lng] = useUrlPosition();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (lat && lng) {
@@ -59,7 +59,11 @@ function Form() {
           setCountry(data.countryName);
           setEmoji(convertToEmoji(data.countryCode));
         })
-        .catch((error) => setError(error.message || error.description))
+        .catch((error) => {
+          error = error.message || error.description; 
+          setError(error);
+          console.error(error);
+        })
         .finally(() => {
           setIsReversedGeoPositionLoading(false);
         });
@@ -86,7 +90,10 @@ function Form() {
     return <Message message="Please select a city on the map." />;
 
   return (
-    <form className={` ${styles.form} ${ isCityLoading  ? styles.loading : ''} `} onSubmit={handleSubmit}>
+    <form
+      className={` ${styles.form} ${isCityLoading ? styles.loading : ""} `}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
