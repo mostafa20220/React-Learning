@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
@@ -9,165 +9,30 @@ import Question from "./Question";
 import ProgressBar from "./ProgressBar";
 import ResultScreen from "./ResultScreen";
 import Footer from "./Footer";
-
-const SECONDS_PER_QUESTION = 10;
-
-const initialState = {
-  questions: [],
-  status: "loading", // Possible States: loading, error, ready, active, finished;
-  index: 0,
-  answer: null,
-  points: 0,
-  highScore: 0,
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_SUCCUSS":
-      return {
-        ...state,
-        status: "ready",
-        questions: action.payload,
-      };
-    case "FETCH_ERROR":
-      return {
-        ...state,
-        status: "error",
-      };
-
-    case "START_QUIZ":
-      return {
-        ...state,
-        status: "active",
-      };
-    case "FINISH_QUIZ":
-      return {
-        ...state,
-        status: "finished",
-        highScore: Math.max(state.points, state.highScore),
-      };
-    case "RESET_QUIZ":
-      return {
-        ...initialState,
-        highScore: state.highScore,
-        questions: state.questions,
-        status: "ready",
-      };
-
-    case "ANSWER_QUESTION":
-      const currentQuestion = state.questions[state.index];
-      return {
-        ...state,
-        answer: action.payload,
-        points:
-          action.payload === currentQuestion.correctOption
-            ? state.points + currentQuestion.points
-            : state.points,
-      };
-    case "NEXT_QUESTION":
-      return {
-        ...state,
-        index: state.index + 1,
-        answer: null,
-      };
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
-}
-
-function Timer({ dispatch, numQuestions }) {
-  const [remainingSeconds,setRemainingSeconds] = useState(SECONDS_PER_QUESTION * numQuestions);
-
-  if (remainingSeconds === 0) {
-    dispatch({ type: "FINISH_QUIZ" });
-  }
-
-  const mins = Math.floor(remainingSeconds / 60);
-  const secs = remainingSeconds % 60;
-
-  useEffect(() => {
-    const ticID = setInterval(() => {
-      setRemainingSeconds((prev) => prev - 1);
-    }, 1000);
-    return () => {
-      clearInterval(ticID);
-    };
-  }, [dispatch]);
-
-  return (
-    <p className="timer">
-      {mins < 10 && "0"}
-      {mins}:{secs < 10 && "0"}
-      {secs}{" "}
-    </p>
-  );
-}
+import { useQuiz } from "../contexts/QuizContext";
+import { Timer } from "./Timer";
 
 export default function App() {
-  const [
-    { status, questions, index, answer, points, highScore, remainingSeconds },
-    dispatch,
-  ] = useReducer(reducer, initialState);
-
-  const maxPoints = questions.reduce(
-    (acc, question) => acc + question.points,
-    0
-  );
-  const numQuestions = questions.length;
-
-  useEffect(() => {
-    const URL = "http://localhost:3001/questions";
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => dispatch({ type: "FETCH_SUCCUSS", payload: data }))
-      .catch(
-        (error) => dispatch({ type: "FETCH_ERROR" })
-        // dispatch({ type: "FETCH_SUCCUSS", payload: DATA })
-      );
-  }, []);
-
+  const { status, dispatch } = useQuiz();
+  
   return (
     <div className="app">
       <Header />
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && (
-          <StartScreen dispatch={dispatch} numQuestions={numQuestions} />
-        )}
+        {status === "ready" && <StartScreen />}
         {status === "active" && (
           <>
-            <ProgressBar
-              answer={answer}
-              index={index}
-              points={points}
-              maxPoints={maxPoints}
-              numQuestions={numQuestions}
-            />
-            <Question
-              question={questions[index]}
-              answer={answer}
-              dispatch={dispatch}
-            ></Question>
+            <ProgressBar />
+            <Question />
             <Footer>
-              <NextButton
-                dispatch={dispatch}
-                answer={answer}
-                index={index}
-                numQuestions={numQuestions}
-              />
-              <Timer numQuestions={numQuestions} dispatch={dispatch} />
+              <NextButton />
+              <Timer />
             </Footer>
           </>
         )}
-        {status === "finished" && (
-          <ResultScreen
-            maxPoints={maxPoints}
-            points={points}
-            highScore={highScore}
-            dispatch={dispatch}
-          />
-        )}
+        {status === "finished" && <ResultScreen />}
       </Main>
     </div>
   );
