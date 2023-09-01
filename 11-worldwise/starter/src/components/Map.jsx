@@ -1,6 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Map.module.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import Button from "./Button";
+import { useCities } from "../contexts/CitiesContext";
+import { useGeolocation } from "../hooks/useGeolocation";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 import {
   MapContainer,
   Marker,
@@ -9,14 +13,11 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
-import { useCities } from "../contexts/CitiesContext";
-import { useGeolocation } from "../hooks/useGeolocation";
-import Button from "./Button";
-import { useUrlPosition } from "../hooks/useUrlPosition";
 
 export default function Map() {
   const [lat, lng] = useUrlPosition();
-  const [mapPosition, setMapPosition] = useState([lat || 51.505, lng || -0.09]);
+  const [mapCenter, setMapCenter] = useState([lat || 51.505, lng || -0.09]);
+  const [isMapClicked, setIsMapClicked] = useState(false);
   const { cities } = useCities();
   const navigate = useNavigate();
   const {
@@ -27,14 +28,15 @@ export default function Map() {
   } = useGeolocation(cbOnSuccess);
 
   useEffect(() => {
-    if (lat && lng) setMapPosition([lat, lng]);
+    if (lat && lng) {
+      if (!isMapClicked) setMapCenter([lat, lng]);
+    }
+    setIsMapClicked(false);
   }, [lat, lng]);
 
-
-  function cbOnSuccess(lat,lng) {
+  function cbOnSuccess(lat, lng) {
     navigate(`form?lat=${lat}&lng=${lng}`);
   }
-
 
   return (
     <div className={styles.mapContainer}>
@@ -44,7 +46,7 @@ export default function Map() {
         </Button>
       )}
       <MapContainer
-        center={mapPosition}
+        center={mapCenter}
         zoom={5}
         scrollWheelZoom={true}
         className={styles.map}
@@ -61,30 +63,36 @@ export default function Map() {
             <Popup>
               <span> {city.emoji}</span>
               <span>
-                {" "}
                 {city.cityName} <br />
-                {city.notes}{" "}
+                {city.notes}
               </span>
             </Popup>
           </Marker>
         ))}
-        <ChangeMapCenter position={mapPosition} />
-        <DetectMapClicks />
+        <DetectMapClicks setIsMapClicked={setIsMapClicked} />
+        <ChangeMapCenter mapCenter={mapCenter} isMapClicked={isMapClicked} setIsMapClicked={setIsMapClicked} setMapCenter={setMapCenter} />
       </MapContainer>
     </div>
   );
 }
 
-function DetectMapClicks() {
+function DetectMapClicks({ setIsMapClicked }) {
   const navigate = useNavigate();
   useMapEvents({
-    click: (e) => navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`),
+    click: (e) => {
+      setIsMapClicked(true);
+      navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
+    },
   });
   return null;
 }
 
-function ChangeMapCenter({ position }) {
+function ChangeMapCenter({ mapCenter, isMapClicked, setIsMapClicked, setMapCenter }) {
   const map = useMap();
-  map.setView(position);
+  if (!isMapClicked) map.setView(mapCenter);
+  else{
+    setMapCenter(map.getCenter());
+  }
+  setIsMapClicked(false);
   return null;
 }
