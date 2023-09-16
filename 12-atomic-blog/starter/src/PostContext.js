@@ -1,10 +1,16 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  memo,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import CreateRandomPost from "./CreateRandomPost";
 
 const PostContext = createContext();
 
 // Custom Context Provider
-export function PostProvider({ children }) {
+export const PostProvider = memo(function PostProvider({ children }) {
   const [posts, setPosts] = useState(() =>
     Array.from({ length: 30 }, () => CreateRandomPost())
   );
@@ -28,20 +34,19 @@ export function PostProvider({ children }) {
     setPosts([]);
   }
 
-  return (
-    <PostContext.Provider
-      value={{
-        posts: searchedPosts,
-        onAddPost: handleAddPost,
-        onClearPosts: handleClearPosts,
-        searchQuery,
-        setSearchQuery,
-      }}
-    >
-      {children}
-    </PostContext.Provider>
+  const value = useMemo(
+    () => ({
+      posts: searchedPosts,
+      searchQuery,
+      setSearchQuery,
+      onAddPost: handleAddPost,
+      onClearPosts: handleClearPosts,
+    }),
+    [searchedPosts, searchQuery]
   );
-}
+
+  return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
+});
 
 // Custom useContext Hook
 export function usePosts() {
