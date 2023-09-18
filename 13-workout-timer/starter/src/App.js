@@ -1,6 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Calculator from "./Calculator";
 import ToggleSounds from "./ToggleSounds";
+
+
+function formatTime(date) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
+}
+
 
 function App() {
   const [allowSound, setAllowSound] = useState(true);
@@ -9,7 +21,7 @@ function App() {
   // Will be be AM or PM
   const partOfDay = time.slice(-2);
 
-  const workouts = [
+  const workouts = useMemo( ()=> [
     {
       name: "Full-body workout",
       numExercises: partOfDay === "AM" ? 9 : 8,
@@ -30,17 +42,8 @@ function App() {
       name: "Core only",
       numExercises: partOfDay === "AM" ? 5 : 4,
     },
-  ];
+  ],[partOfDay]);
 
-  function formatTime(date) {
-    return new Intl.DateTimeFormat("en", {
-      month: "short",
-      year: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).format(date);
-  }
 
   useEffect(function () {
     const id = setInterval(function () {
@@ -49,6 +52,7 @@ function App() {
 
     return () => clearInterval(id);
   }, []);
+
 
   return (
     <main>
