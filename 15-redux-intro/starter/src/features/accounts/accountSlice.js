@@ -8,6 +8,7 @@ const initialState = {
   isLoading: false,
 };
 
+// account slice
 const accountSlice = createSlice({
   name: "account",
   initialState,
@@ -26,15 +27,30 @@ const accountSlice = createSlice({
         state.loanPurpose = action.payload.purpose;
         state.loan = action.payload.amount;
         state.balance += action.payload.amount;
-      }
+      },
     },
     loanPayback(state) {
       state.balance -= state.loan;
       state.loan = 0;
       state.loanPurpose = "";
-    }
+    },
   },
 });
+
+// Custom deposit Action Creator
+export function deposit(amount, currency) {
+  if (currency === "USD") return { type: "account/deposit", payload: amount };
+  else
+    return async function (dispatch, getState) {
+      dispatch({ type: "account/convertingCurrency" });
+      const rate = await fetch(
+        `https://api.exchangerate-api.com/v4/latest/${currency}`
+      );
+      const data = await rate.json();
+      const amountInUSD = amount / data.rates.USD;
+      dispatch({ type: "account/deposit", payload: amountInUSD });
+    };
+}
 
 export const { withdraw, requestLoan, loanPayback } = accountSlice.actions;
 
@@ -72,21 +88,6 @@ export default accountSlice.reducer;
 //       return state;
 //   }
 // }
-
-// // Account Actions Creators Functions
-export function deposit(amount, currency) {
-  if (currency === "USD") return { type: "account/deposit", payload: amount };
-  else
-    return async function (dispatch, getState) {
-      dispatch({ type: "account/convertingCurrency" });
-      const rate = await fetch(
-        `https://api.exchangerate-api.com/v4/latest/${currency}`
-      );
-      const data = await rate.json();
-      const amountInUSD = amount / data.rates.USD;
-      dispatch({ type: "account/deposit", payload: amountInUSD });
-    };
-}
 
 // function withdraw(amount) {
 //   return { type: "account/withdraw", payload: amount };
