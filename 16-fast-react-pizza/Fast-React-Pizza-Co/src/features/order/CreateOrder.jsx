@@ -104,7 +104,7 @@ function CreateOrder() {
               className="input"
             />
             {!position?.latitude && !position?.longitude && (
-              <span className="absolute right-1 top-[4.5px] z-50 sm:right-0.5 sm:top-0.5 lg:right-1 lg:top-[9.5%] ">
+              <span className={`absolute right-2 top-2 z-5 sm:right-0.5 sm:top-0.5 lg:right-1  ${error ? "lg:top-[5.5%]" : "lg:top-[9.5%]" }  `}>
                 <Button
                   size="small"
                   disabled={isLoadingAddress}

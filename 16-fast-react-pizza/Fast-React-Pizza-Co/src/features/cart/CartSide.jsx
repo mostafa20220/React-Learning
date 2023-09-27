@@ -25,11 +25,15 @@ export default function CartSide() {
     dispatch(clearCart());
   }
 
-  if (!cart.length) return <EmptyCart />;
-  if (!cart.length) return null;
+  if (!cart.length)
+    return (
+      <div className="hidden lg:block">
+        <EmptyCart />
+      </div>
+    );
 
   return (
-    <aside className="lg:right-1 lg:top-1 hidden h-fit rounded-lg bg-stone-200 px-3 pt-6 text-center font-medium text-stone-800 lg:sticky lg:block">
+    <aside className="hidden h-fit rounded-lg bg-stone-200 px-3 pt-6 text-center font-medium text-stone-800 lg:sticky lg:right-1 lg:top-1 lg:block">
       <h2 className="mb-4 text-2xl">🛒 Your Cart</h2>
 
       <div className="flex items-center justify-between px-2 py-4 font-semibold lg:text-lg ">

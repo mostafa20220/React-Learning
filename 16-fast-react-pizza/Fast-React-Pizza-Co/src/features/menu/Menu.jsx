@@ -20,9 +20,9 @@ function Menu() {
   );
 
   return (
-    <div className="lg:grid lg:grid-cols-[1fr_14fr_5fr] lg:gap-8 ">
+    <div className="lg:grid lg:grid-cols-[1fr_14fr_5fr] lg:gap-8">
       <div></div>
-      <div className="mx-auto flex h-[90%] flex-col px-2">
+      <div className="mx-auto flex h-[90%] lg:w-full flex-col px-2">
         <input
           type="text"
           placeholder="Search"

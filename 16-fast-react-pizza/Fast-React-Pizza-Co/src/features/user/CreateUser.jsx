@@ -14,7 +14,7 @@ function CreateUser() {
   const dispatch = useDispatch();
 
   const btnContent = !savedUsername
-    ? "Start ordering"
+    ? "Start Ordering"
     : !username
     ? `Continue Ordering, ${savedUsername}`
     : "Update Your Name";
