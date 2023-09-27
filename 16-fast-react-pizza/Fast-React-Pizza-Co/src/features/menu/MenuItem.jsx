@@ -19,31 +19,35 @@ function MenuItem({ pizza }) {
       unitPrice,
       quantity: 1,
     };
-    
+
     dispatch(addItemToCart(newItem));
   }
 
   return (
     <li
-      className={`flex gap-4 lg:flex-col lg:max-w-full border-b-2 border-collapse py-1.5 ${
+      className={`flex border-collapse gap-4 border-b-2 py-1.5 lg:max-w-full lg:flex-col ${
         soldOut ? "opacity-80 grayscale" : ""
       } `}
     >
-      <img src={imageUrl} alt={name} className="h-24 w-24 sm:w-32 sm:h-32 md:w-48 md:h-48 lg:w-full lg:h-full rounded-lg" />
+      <img
+        src={imageUrl}
+        alt={name}
+        className="lg:w-full lg:h-auto h-24 w-24 rounded-lg sm:h-32 sm:w-32 md:h-48   md:w-48"
+      />
       <div className="flex flex-1 flex-col py-1">
-        <p className="font-semibold sm:text-base lg:text-xl text-sm">{name}</p>
-        <p className="text-xs sm:text-sm lg:text-lg mb-2 lg:mb-4  sm:mb-0 capitalize italic text-stone-500">
+        <p className="text-sm font-semibold sm:text-base lg:text-xl">{name}</p>
+        <p className="mb-2 text-xs capitalize italic text-stone-500  sm:mb-0 sm:text-sm lg:mb-4 lg:text-base">
           {ingredients.join(", ")}
         </p>
-        <div className="first-letter lg:text-lg mt-auto flex flex-wrap gap-2 items-center justify-between text-sm font-semibold uppercase text-stone-500 ">
+        <div className="first-letter mt-auto flex flex-wrap items-center justify-between gap-2 text-sm font-semibold uppercase text-stone-500 lg:text-lg ">
           {!soldOut ? <p>{formatCurrency(unitPrice)}</p> : <p>Sold out</p>}
 
           {currentQuantity ? (
-            <div className="flex gap-6">
-            <UpdateItemQuantityBtns pizzaId={id} />
-            <span className="hidden sm:block lg:hidden">
-            <DeleteItemBtn pizzaId={id} />
-            </span>
+            <div className="flex items-center gap-6">
+              <UpdateItemQuantityBtns pizzaId={id} />
+              <span className="hidden sm:block lg:hidden">
+                <DeleteItemBtn pizzaId={id} />
+              </span>
             </div>
           ) : (
             !soldOut && (

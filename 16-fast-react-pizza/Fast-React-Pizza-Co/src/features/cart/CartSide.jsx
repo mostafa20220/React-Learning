@@ -26,16 +26,16 @@ export default function CartSide() {
   }
 
   if (!cart.length) return <EmptyCart />;
+  if (!cart.length) return null;
 
   return (
-    <aside className="w-[28rem]l right-8 top-28 hidden h-fit w-[23%] rounded-lg bg-stone-200 px-3 pt-6 text-center font-medium text-stone-800 lg:absolute lg:block">
+    <aside className="lg:right-1 lg:top-1 hidden h-fit rounded-lg bg-stone-200 px-3 pt-6 text-center font-medium text-stone-800 lg:sticky lg:block">
       <h2 className="mb-4 text-2xl">🛒 Your Cart</h2>
 
-      <div className="flex font-semibold lg:text-lg items-center justify-between px-2 py-4 ">
+      <div className="flex items-center justify-between px-2 py-4 font-semibold lg:text-lg ">
         <p className="">{totalCartQuantity}&times; Pizzas</p>
         <p className="">{formatCurrency(totalPrice)} </p>
       </div>
-
 
       <ul className="divide-y divide-stone-400 border-y border-stone-400 ">
         {cart.map((item) => (

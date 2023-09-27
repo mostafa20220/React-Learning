@@ -20,7 +20,7 @@ export default function UpdateItemQuantityBtns({pizzaId}) {
   }
 
   return (
-    <div className="flex items-center gap-2  sm:gap-3">
+    <div className="flex items-center gap-2  sm:gap-3 px-3">
       <Button onClick={handleDecreaseQuantity} size="rounded">
         -
       </Button>

@@ -17,7 +17,7 @@ function CreateUser() {
     ? "Start ordering"
     : !username
     ? `Continue Ordering, ${savedUsername}`
-    : "Change Name";
+    : "Update Your Name";
 
   function handleSubmit(e) {
     e.preventDefault();
