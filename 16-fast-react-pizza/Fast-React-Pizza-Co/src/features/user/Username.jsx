@@ -8,5 +8,5 @@ export function Username() {
 
   if(!username) return null;
 
-  return <p className="font-semibold hidden sm:block">{username}</p>;
+  return <p className="font-semibold lg:text-xl hidden sm:block">{username}</p>;
 }

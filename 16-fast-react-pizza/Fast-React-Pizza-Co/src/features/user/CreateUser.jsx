@@ -21,13 +21,16 @@ function CreateUser() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(updateUsername(username));
+    if (username) dispatch(updateUsername(username));
     navigate("/menu");
   }
 
   return (
-    <form onSubmit={handleSubmit} className="px-2 w-full">
-      <p className="text-md mb-8 md:text-base lg:text-4xl">👋 Welcome!</p>
+    <form
+      onSubmit={handleSubmit}
+      className="w-full space-y-4 px-2 lg:space-y-8"
+    >
+      <p className="text-md  md:text-base lg:text-4xl">👋 Welcome!</p>
 
       {/* <label htmlFor="username"> Your Name </label> */}
       <input
@@ -35,12 +38,12 @@ function CreateUser() {
         placeholder="Your full name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="lg:text-4xl lg:max-w-xl lg:py-6 lg:px-16 lg:mb-12 input mb-4 max-w-xs"
+        className="input    max-w-xs lg:max-w-lg lg:px-16 lg:py-6 lg:text-3xl"
         name="username"
       />
 
-      <div>
-        <Button size="large" >{btnContent}</Button>
+      <div className={`${!username && !savedUsername ? "scale-0" : ""}`}>
+        <Button size="">{btnContent}</Button>
       </div>
     </form>
   );

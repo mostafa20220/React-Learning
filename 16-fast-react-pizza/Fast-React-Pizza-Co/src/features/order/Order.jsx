@@ -37,33 +37,33 @@ function Order() {
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   return (
-    <div className="px-4 py-6 space-y-8">
-      <div className="flex items-center flex-wrap justify-between gap-4">
-        <h2 className="font-semibold text-xl "> Order #{id} status</h2>
+    <div className="px-4 py-6 space-y-8 mx-auto max-w-4xl  font-medium lg:h-fit lg:py-12 ">
+      <div className="flex items-center flex-wrap justify-between gap-4 ">
+        <h2 className="font-semibold text-xl lg:text-3xl "> Order #{id} status</h2>
 
-        <div className="flex items-center gap-2 ">
-          {priority && <span className="bg-red-500 rounded-full text-red-50 px-3 py-1 text-sm font-semibold uppercase tracking-wide ">Priority</span>}
-          <span className="bg-green-500 rounded-full text-red-50 px-3 py-1 text-sm font-semibold uppercase tracking-wide ">{status} order</span>
+        <div className="flex items-center gap-2 text-sm lg:text-lg ">
+          {priority && <span className="bg-red-500 rounded-full text-red-50 px-3 py-1    font-semibold uppercase tracking-wide ">Priority</span>}
+          <span className="bg-green-500 rounded-full text-red-50 px-3 py-1 font-semibold uppercase tracking-wide ">{status} order</span>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 items-center justify-between bg-stone-200 py-5 px-6 ">
+      <div className="flex flex-wrap gap-2 lg:text-xl  items-center justify-between bg-stone-200 py-5 px-6 ">
         <p className="font-medium ">
           {deliveryIn >= 0
             ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
             : "Order should have arrived"}
         </p>
-        <p className="text-xs text-stone-500">(Estimated delivery: {formatDate(estimatedDelivery)})</p>
+        <p className="text-xs lg:text-base text-stone-500">(Estimated delivery: {formatDate(estimatedDelivery)})</p>
       </div>
 
         <ul className="divide-y border-b border-t divide-stone-200">
           {cart.map((item) => <OrderItem key={item.pizzaId} item={item} isLoadingIngredients={isLoadingIngredients} ingredients={fetcher?.data?.find(el=>el.id===item.pizzaId).ingredients} /> )}
         </ul>
 
-      <div className="bg-stone-200 py-5 px-6 space-y-2">
-        <p className="font-medium text-sm text-stone-600">Price pizza: {formatCurrency(orderPrice)}</p>
-        {priority && <p className="font-medium text-sm text-stone-600">Price priority: {formatCurrency(priorityPrice)}</p>}
-        <p className="font-bold">To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
+      <div className="bg-stone-200 py-5 text-sm lg:text-base px-6 space-y-2">
+        <p className="font-medium  text-stone-600">Price pizza: {formatCurrency(orderPrice)}</p>
+        {priority && <p className="font-medium  text-stone-600">Price priority: {formatCurrency(priorityPrice)}</p>}
+        <p className="font-bold text-base lg:text-lg">To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
       </div>
       {
         !priority &&

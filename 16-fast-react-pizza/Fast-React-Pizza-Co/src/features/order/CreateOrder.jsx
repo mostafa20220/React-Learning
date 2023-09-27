@@ -2,7 +2,6 @@ import { useState } from "react";
 import { createOrder } from "../../services/apiRestaurant";
 import {
   Form,
-  json,
   redirect,
   useActionData,
   useNavigation,
@@ -34,10 +33,15 @@ function CreateOrder() {
 
   const cart = useSelector(getCart);
 
-  const {username, error, status:gettingAddressStatus, address, position } = useSelector(state => state.user);
+  const {
+    username,
+    error,
+    status: gettingAddressStatus,
+    address,
+    position,
+  } = useSelector((state) => state.user);
 
-  const isLoadingAddress =  gettingAddressStatus === "loading";
-
+  const isLoadingAddress = gettingAddressStatus === "loading";
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -45,24 +49,24 @@ function CreateOrder() {
   const actionErrorsObj = useActionData();
 
   const totalPrice = useSelector(getTotalCartPrice);
-  const priorityPrice = withPriority ? totalPrice * 0.2 : 0;
-  const totalWithPriority = totalPrice + priorityPrice;
+  const totalWithPriority = totalPrice + totalPrice * 0.2;
 
-
-  function handleGetCurrentAddress(e){
+  function handleGetCurrentAddress(e) {
     e.preventDefault();
     dispatch(fetchAddress());
   }
 
-
-  if(cart.length === 0) return <EmptyCart/>;
+  if (cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="p-4 font-medium">
-      <h2 className="mb-8 text-xl ">Ready to order?<br/> Let's go!</h2>
+    <div className="mx-auto max-w-3xl p-4 font-medium lg:h-fit lg:pt-[6%]">
+      <div className="mb-8 text-xl lg:text-center lg:text-3xl lg:tracking-widest space-y-1 lg:pb-4">
+        <h2 className="lg:capitalize">Ready to order?</h2>
+        <h3 className="lg:font-bold uppercase">Let's go!</h3>
+      </div>
 
       {/* <Form method="POST" > */}
-      <Form method="POST" action="/order/new">
+      <Form method="POST" action="/order/new" className="lg:text-xl lg:space-y-5 ">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">First Name</label>
           <div className="grow">
@@ -90,15 +94,27 @@ function CreateOrder() {
 
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
-          <div className="grow relative">
-            <input type="text" name="address" defaultValue={address}  required disabled={isLoadingAddress} className="input" />
-            {
-              !position?.latitude && !position?.longitude &&
-              <span className="absolute right-1 top-[4.5px] sm:top-0.5 sm:right-0.5 z-50">
-            <Button size="small" disabled={isLoadingAddress} onClick={handleGetCurrentAddress}>Get Current Address</Button>
-            </span>
-            }
-          {error && (
+          <div className="relative grow">
+            <input
+              type="text"
+              name="address"
+              defaultValue={address}
+              required
+              disabled={isLoadingAddress}
+              className="input"
+            />
+            {!position?.latitude && !position?.longitude && (
+              <span className="absolute right-1 top-[4.5px] z-50 sm:right-0.5 sm:top-0.5 lg:right-1 lg:top-[9.5%] ">
+                <Button
+                  size="small"
+                  disabled={isLoadingAddress}
+                  onClick={handleGetCurrentAddress}
+                >
+                  Get Current Address
+                </Button>
+              </span>
+            )}
+            {error && (
               <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
                 {error}
               </p>
@@ -115,19 +131,19 @@ function CreateOrder() {
             onChange={(e) => setWithPriority(e.target.checked)}
             className="h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2 "
           />
-          <label className="text-lg font-bold" htmlFor="priority">
-            want to yo give your order priority?
+          <label className="sm:text-lg  text-sm font-bold" htmlFor="priority">
+            Want to yo give your order priority for extra 20% ? <br /> <span className={`${withPriority ? 'line-through opacity-60' : '' } `}>{formatCurrency(totalPrice)}</span> &rarr; {formatCurrency(totalWithPriority)}
           </label>
         </div>
 
         <input type="hidden" name="cart" value={JSON.stringify(cart)} />
         <input type="hidden" name="position" value={JSON.stringify(position)} />
 
-        <div>
-          <Button disabled={isSubmitting || isLoadingAddress}>
+        <div className="text-center pt-3 lg:pt-10">
+          <Button disabled={isSubmitting || isLoadingAddress}  >
             {isSubmitting
               ? "placing order..."
-              : `order now for ${formatCurrency(totalWithPriority)}`}
+              : `order now for ${formatCurrency(withPriority ? totalWithPriority : totalPrice)}`}
           </Button>
         </div>
       </Form>

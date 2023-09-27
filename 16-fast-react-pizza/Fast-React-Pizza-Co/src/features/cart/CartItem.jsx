@@ -15,15 +15,16 @@ function CartItem({ item }) {
   const totalPrice = quantity * unitPrice;
 
   return (
-    <li className="flex  items-center justify-between py-3 text-sm font-normal  sm:text-base ">
-      <div className="flex items-center gap-1.5">
+    <li className="flex gap-4 items-center justify-between py-4 text-sm font-normal  sm:text-base ">
+<div className="flex items-center gap-2">
       <span className="font-semibold">{quantity}&times;</span>
       <p className="">{name}</p>
-      </div>
-      <div className="flex items-center justify-center gap-6 font-semibold">
+</div>
+      
+      <div className="flex items-center justify-center gap-4 font-semibold">
+
         <p>{formatCurrency(totalPrice)}</p>
 
-        <UpdateItemQuantityBtns pizzaId={pizzaId} />
         <span className="hidden sm:block">
           <DeleteItemBtn pizzaId={pizzaId} />
         </span>

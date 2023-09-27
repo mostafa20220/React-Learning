@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import LinkButton from "../../ui/LinkButton";
 import Button from "../../ui/Button";
 import CartItem from "./CartItem";
@@ -9,7 +8,6 @@ import EmptyCart from "./EmptyCart";
 function Cart() {
   const cart = useSelector(getCart);
   const username = useSelector(getUsername);
-
 
   const dispatch = useDispatch();
 
