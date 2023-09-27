@@ -37,7 +37,7 @@ function Order() {
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   return (
-    <div className="px-4 py-6 space-y-8 mx-auto max-w-4xl  font-medium lg:h-fit lg:py-12 ">
+    <div className="px-4 space-y-8 mx-auto max-w-4xl  font-medium lg:h-fit  ">
       <div className="flex items-center flex-wrap justify-between gap-4 ">
         <h2 className="font-semibold text-xl lg:text-3xl "> Order #{id} status</h2>
 
