@@ -10,9 +10,9 @@ import { useCreateUpdateCabin } from "./useCreateUpdateCabin";
 
 type TCreateCabinForm = Omit<TCabin, "image"> & { image: FileList };
 
-type PropsType = { cabinToEdit?: TCabin };
+type PropsType = { cabinToEdit?: TCabin; onClose: () => void, isItModal?: boolean };
 
-function CreateCabinForm({ cabinToEdit }: PropsType) {
+function CreateCabinForm({ cabinToEdit, onClose, isItModal=false }: PropsType) {
   const { id: cabinToEditId, ...restValues } = cabinToEdit ?? {};
   const isEditForm = Boolean(cabinToEditId);
 
@@ -41,6 +41,7 @@ function CreateCabinForm({ cabinToEdit }: PropsType) {
           onSuccess: (data) => {
             console.log("onsuccess Data: ", data);
             reset();
+            onClose();
           },
         }
       );
@@ -51,17 +52,19 @@ function CreateCabinForm({ cabinToEdit }: PropsType) {
           onSuccess: (data) => {
             console.log("onsuccess Data: ", data);
             reset();
+            onClose();
           },
         }
       );
   }
 
-  function onError(err) {
+  // function onError(err) {
     // console.error(err);
-  }
+  // }
 
   return (
-    <Form onSubmit={handleSubmit(submit, onError)}>
+    // <Form onSubmit={handleSubmit(submit, onError)}>
+    <Form onSubmit={handleSubmit(submit)} type={isItModal && "modal"}  >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -158,11 +161,10 @@ function CreateCabinForm({ cabinToEdit }: PropsType) {
 
       <StyledFormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button onClick={onClose} variation="secondary" type="reset">
           Cancel
         </Button>
         <Button disabled={isCabinLoading}>
-          {" "}
           {isEditForm ? "Update Cabin" : "Create a New Cabin"}
         </Button>
       </StyledFormRow>
