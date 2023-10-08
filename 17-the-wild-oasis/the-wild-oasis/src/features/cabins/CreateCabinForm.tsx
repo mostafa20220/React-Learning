@@ -10,7 +10,7 @@ import { useCreateUpdateCabin } from "./useCreateUpdateCabin";
 
 type TCreateCabinForm = Omit<TCabin, "image"> & { image: FileList };
 
-type PropsType = { cabinToEdit?: TCabin; onClose: () => void, isItModal?: boolean };
+type PropsType = { cabinToEdit?: TCabin; onClose?: () => void, isItModal?: boolean };
 
 function CreateCabinForm({ cabinToEdit, onClose, isItModal=false }: PropsType) {
   const { id: cabinToEditId, ...restValues } = cabinToEdit ?? {};

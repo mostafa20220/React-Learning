@@ -6,18 +6,21 @@ import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import { useCreateUpdateCabin } from "./useCreateUpdateCabin";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../ui/Table";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Img = styled.img`
   display: block;
@@ -61,10 +64,9 @@ function CabinRow({ cabin }: PropsType) {
     createEditCabin({ ...duplicateCabin, name: `copy of (${cabin.name})` });
   }
 
-
   return (
     <>
-      <TableRow>
+      <Table.Row>
         <Img src={cabin.image} />
         <Cabin>{cabin.name}</Cabin>
         {/* <div>{cabin.description}</div> */}
@@ -85,18 +87,35 @@ function CabinRow({ cabin }: PropsType) {
           >
             <HiSquare2Stack />
           </button>
-          <button
-            onClick={() => setIsEditing((show) => !show)}
-            disabled={isLoading}
-          >
-            <HiPencil />
-          </button>
-          <button onClick={() => deleteCabin(cabin.id)} disabled={isLoading}>
-            <HiTrash />
-          </button>
+          <Modal>
+            <Modal.Open window="edit-cabin-form">
+              <button
+                onClick={() => setIsEditing((show) => !show)}
+                disabled={isLoading}
+              >
+                <HiPencil />
+              </button>
+            </Modal.Open>
+            <Modal.Window name="edit-cabin-form">
+              <CreateCabinForm cabinToEdit={cabin} />
+            </Modal.Window>
+
+            <Modal.Open window="delete-cabin-form">
+              <button disabled={isLoading}>
+                <HiTrash />
+              </button>
+            </Modal.Open>
+
+            <Modal.Window name="delete-cabin-form">
+              <ConfirmDelete
+                resourceName={"Cabin"}
+                disabled={isLoading}
+                onConfirm={() => deleteCabin(cabin.id)}
+              />
+            </Modal.Window>
+          </Modal>
         </div>
-      </TableRow>
-      {isEditing && <CreateCabinForm cabinToEdit={cabin} />}
+      </Table.Row>
     </>
   );
 }
