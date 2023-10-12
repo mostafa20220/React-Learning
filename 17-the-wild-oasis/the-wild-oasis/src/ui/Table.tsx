@@ -15,6 +15,7 @@ const CommonRow = styled.div`
   grid-template-columns: ${(props) => props.columns};
   column-gap: 2.4rem;
   align-items: center;
+  /* justify-items: center; */
   transition: none;
 `;
 

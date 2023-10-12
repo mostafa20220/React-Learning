@@ -1,6 +1,16 @@
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { HiEllipsisVertical } from "react-icons/hi2";
+import useClickOutside from "../hooks/useClickOutside";
+import { set } from "date-fns";
 
-const StyledMenu = styled.div`
+const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -60,3 +70,136 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+type PropsType = {
+  children: React.ReactNode;
+};
+
+const MenusContext = createContext<{
+  openList: string;
+  open: (list: string) => void;
+  close: () => void;
+  position: DOMRect | null;
+  setPosition: React.Dispatch<React.SetStateAction<DOMRect | null>>;
+  el: HTMLElement | null;
+  setEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+}>({
+  openList: "",
+  open: () => {},
+  close: () => {},
+  position: null,
+  setPosition: () => {},
+  el: null,
+  setEl: () => {},
+});
+
+function Menus({ children }: PropsType) {
+  const [openList, setOpenList] = useState<string>("");
+  const [position, setPosition] = useState(null);
+
+  const [el, setEl] = useState<HTMLElement | null>(null);
+
+  const open = setOpenList;
+  const close = () => setOpenList("");
+
+  return (
+    <MenusContext.Provider
+      value={{ openList, open, close, position, setPosition, el, setEl }}
+    >
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+type TogglePropsType = {
+  list: string;
+};
+
+function Toggle({ list }: TogglePropsType) {
+  const { openList, open, close, setPosition, setEl } =
+    useContext(MenusContext);
+
+  const toggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log("openList", openList, "list", list);
+    if (openList && openList === list) close();
+    else {
+      const btnEl = (e.target as HTMLButtonElement).closest(
+        "button"
+      ) as HTMLButtonElement;
+      open(list);
+      setPosition(btnEl.getBoundingClientRect());
+
+      setEl(btnEl);
+
+      console.log(openList);
+    }
+  };
+
+  return (
+    <StyledToggle onClick={toggle}>
+      <HiEllipsisVertical />
+    </StyledToggle>
+  );
+}
+
+type ListPropsType = {
+  children: React.ReactNode;
+  name: string;
+};
+
+function List({ children, name }: ListPropsType) {
+  const { openList, setPosition, position, close, el } =
+    useContext(MenusContext);
+  const ref = useClickOutside(close);
+
+  const pos = {
+    x: window.innerWidth - position?.right,
+    y: position?.y + position?.height + 8,
+  };
+
+  //* 1 Solution: //? This solution is better because it will close the menu when the user scrolls
+  // useEffect(() => {
+  //   document.addEventListener("scroll", close);
+
+  //   return () => document.removeEventListener("scroll", close);
+  // }, []);
+
+  //* 2 Solution: //? This solution is not good because it will re-render the component every time the scroll event is triggered
+  useEffect(() => {
+    const handleScroll = () => {
+      setPosition(el?.getBoundingClientRect());
+    };
+    document.addEventListener("scroll", handleScroll);
+
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, [el, setPosition]);
+
+  if (openList !== name) return null;
+
+  return createPortal(
+    <StyledList ref={ref} position={pos}>
+      {children}
+    </StyledList>,
+    document.body
+  );
+}
+
+function Button({ children , onClick}: PropsType & { onClick?: () => void }) {
+  const { close } = useContext(MenusContext);
+
+  const handleClick = () => {
+    onClick?.();
+    close();
+  }
+
+  return (
+    <li>
+      <StyledButton onClick={handleClick}>{children}</StyledButton>
+    </li>
+  );
+}
+
+export default Menus;
+Menus.Toggle = Toggle;
+Menus.List = List;
+Menus.Button = Button;
