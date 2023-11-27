@@ -9,7 +9,7 @@
     "js": "nodemon ./dist/index.js ",
     "ts": "tsc -w ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'Building... '",
+    "build": "npm install && tsc",
     "server": "node ./dist/index.js"
   },
   "author": "",
