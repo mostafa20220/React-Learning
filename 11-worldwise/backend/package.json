@@ -9,7 +9,7 @@
     "js": "nodemon ./dist/index.js ",
     "ts": "tsc -w ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"tsc",
+    "build": "tsc",
     "server": "node ./dist/index.js"
   },
   "author": "",
@@ -40,6 +40,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.3.2"
   }
 }
