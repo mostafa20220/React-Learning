@@ -16,12 +16,13 @@ const cities_router_1 = require("./src/routers/cities.router");
 const helpers_1 = require("./src/utils/helpers");
 const users_router_1 = require("./src/routers/users.router");
 const auth_router_1 = require("./src/routers/auth.router");
-const options = {
-    key: node_fs_1.default.readFileSync('localhost-key.pem'),
-    cert: node_fs_1.default.readFileSync('localhost.pem'),
-};
+// const options = {
+// key: fs.readFileSync('localhost-key.pem'),
+// cert: fs.readFileSync('localhost.pem'),
+// };
 const app = (0, express_1.default)();
-const server = node_https_1.default.createServer(options, app);
+// const server = https.createServer(options, app);
+const server = node_https_1.default.createServer(app);
 // connect mongodb
 (function connectMongoose() {
     const uri = process.env.MONGODB_CONNECTION_STRING;
