@@ -1,3 +1,4 @@
+import { FormEventHandler } from "react";
 import styled from "styled-components";
 
 const StyledSelect = styled.select`
@@ -13,3 +14,15 @@ const StyledSelect = styled.select`
   font-weight: 500;
   box-shadow: var(--shadow-sm);
 `;
+
+
+type SelectProps = {options: {label: string, value: string}[],
+type?: "white" | "grey",
+onChange?: (event: React.ChangeEvent<HTMLOptionElement> ) => void,
+}
+
+export default function Select({options ,...restProps}: SelectProps ) {
+  return <StyledSelect {...restProps}>
+    {options.map((option) => <option key={option.label} value={option.value}>{option.label}</option> )}
+  </StyledSelect>;
+}

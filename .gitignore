@@ -1,1 +1,8 @@
 node_modules
+*.env
+*.pem
+*.txt
+*.log
+*.vscode
+
+11-worldwise/backend/localhost-key.pem

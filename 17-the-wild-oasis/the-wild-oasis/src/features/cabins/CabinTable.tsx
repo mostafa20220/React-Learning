@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
@@ -7,29 +6,6 @@ import { TCabin } from "../../../types/remoteTypes";
 import Menus from "../../ui/Menus";
 import { useSearchParams } from "react-router-dom";
 
-// const Table = styled.div`
-//   border: 1px solid var(--color-grey-200);
-
-//   font-size: 1.4rem;
-//   background-color: var(--color-grey-0);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
-
-// const TableHeader = styled.header`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-
-//   background-color: var(--color-grey-50);
-//   border-bottom: 1px solid var(--color-grey-100);
-//   text-transform: uppercase;
-//   letter-spacing: 0.4px;
-//   font-weight: 600;
-//   color: var(--color-grey-600);
-//   padding: 1.6rem 2.4rem;
-// `;
 
 function CabinTable() {
   const { cabins, isLoading } = useCabins();
@@ -53,6 +29,39 @@ function CabinTable() {
       throw new Error("Invalid filter value: " + filterValue);
   }
 
+  const sortByValue = searchParams.get("sortBy") ?? "name-asc";
+  const [field, direction] = sortByValue.split("-"); // "price-desc" => ["price", "desc"]
+  const modifier = direction === "desc" ? -1 : 1;
+  const sortedCabins = filteredCabins;
+
+  // debug
+  // console.log("sortedCabins: ", sortedCabins);
+  console.log("sortByValue: ", sortByValue);
+  console.log("field: ", field);
+  console.log("direction: ", direction);
+  console.log("modifier: ", modifier);
+
+  switch (field) {
+    case "name":
+      sortedCabins?.sort((a, b) =>
+        a.name.localeCompare(b.name) * modifier 
+      )
+      break;
+case "price":
+      sortedCabins?.sort((a, b) =>
+        (a.regular_price - b.regular_price) * modifier
+      );
+      break;
+case "maxCapacity":
+      sortedCabins?.sort((a, b) =>
+        (a.max_capacity - b.max_capacity) * modifier
+      );
+      break;
+  
+    default:
+      throw new Error("Invalid sort value: " + sortByValue);
+  }
+
   return (
     <Menus>
       <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -71,7 +80,8 @@ function CabinTable() {
 
         <Table.Body
           // data={cabins}
-          data={filteredCabins}
+          // data={filteredCabins}
+          data={sortedCabins}
           render={(cabin: TCabin) => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>

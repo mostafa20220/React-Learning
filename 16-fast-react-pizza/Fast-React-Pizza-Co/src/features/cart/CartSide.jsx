@@ -16,9 +16,7 @@ import { formatCurrency } from "../../utils/helpers";
 export default function CartSide() {
   const cart = useSelector(getCart);
   const dispatch = useDispatch();
-
   const totalCartQuantity = useSelector(getTotalCartQuantity);
-
   const totalPrice = useSelector(getTotalCartPrice);
 
   function handleClearCart() {
