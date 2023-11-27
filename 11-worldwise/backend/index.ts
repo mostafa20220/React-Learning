@@ -40,7 +40,7 @@ app.use("/api/uploads", express.static(path.join(__dirname, "uploads"))); // use
 app.use(express.json()); // use express bodyParser as middleware
 app.use(cookieParser()); // use cookieParser as middleware
 app.use(morgan("dev")); // use morgan as middleware
-app.use(cors({ origin: "https://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://worldwide-react-app.onrender.com", credentials: true }));
 
 
 // Routers
