@@ -14,14 +14,16 @@ import { usersRouter } from "./src/routers/users.router";
 import { authRouter } from "./src/routers/auth.router";
 
 
-const options = {
-  key: fs.readFileSync('localhost-key.pem'),
-  cert: fs.readFileSync('localhost.pem'),
-};
+// const options = {
+  // key: fs.readFileSync('localhost-key.pem'),
+  // cert: fs.readFileSync('localhost.pem'),
+// };
 
 const app = express();
 
-const server = https.createServer(options, app);
+// const server = https.createServer(options, app);
+const server = https.createServer(app);
+
 
 // connect mongodb
 (function connectMongoose() {
