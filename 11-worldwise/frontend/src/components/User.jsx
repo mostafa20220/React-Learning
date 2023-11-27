@@ -6,17 +6,17 @@ import { useEffect } from "react";
 function User() {
   const { user, logout, isAuthenticated } = useAuth();
 
-
   if (!user) return null;
 
   function logoutHandler() {
     if (logout()) navigate("/");
   }
 
+  const avatarUrl = `https://worldwide-react-app-api.onrender.com/api${user.avatar}`;
 
-  const avatarUrl = `https://localhost:3000/api${user.avatar}`;
-
-  const msg = isAuthenticated ? `Welcome, ${user.firstName}` : `${user.firstName} ${user.lastName}`;
+  const msg = isAuthenticated
+    ? `Welcome, ${user.firstName}`
+    : `${user.firstName} ${user.lastName}`;
 
   return (
     <div className={styles.user}>
@@ -32,4 +32,3 @@ function User() {
 }
 
 export default User;
-

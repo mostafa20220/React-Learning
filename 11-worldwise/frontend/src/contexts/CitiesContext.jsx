@@ -8,7 +8,7 @@ import {
 import { useAuth } from "./AuthContext";
 import { privateFetch } from "../services/privateFetch";
 
-const BASE_URL = "https://localhost:3000/api/cities";
+const BASE_URL = "https://worldwide-react-app-api.onrender.com/api/cities";
 
 const CitiesContext = createContext();
 
@@ -90,12 +90,14 @@ function CitiesProvider({ children }) {
   }
 
   async function getCityById(id) {
-
     dispatch({ type: "loading" });
 
     // const res = await fetchWrapper(`${BASE_URL}/${id}`);
     // if (res.error) dispatch({ type: "error", payload: res.error });
-    dispatch({ type: "city/loaded", payload: cities.find(city => city._id === id) });
+    dispatch({
+      type: "city/loaded",
+      payload: cities.find((city) => city._id === id),
+    });
   }
 
   async function addCity(city) {

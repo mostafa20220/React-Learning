@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
-const node_fs_1 = __importDefault(require("node:fs"));
-const node_path_1 = __importDefault(require("node:path"));
-const node_https_1 = __importDefault(require("node:https"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const https_1 = __importDefault(require("https"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -22,7 +22,7 @@ const auth_router_1 = require("./src/routers/auth.router");
 // };
 const app = (0, express_1.default)();
 // const server = https.createServer(options, app);
-const server = node_https_1.default.createServer(app);
+const server = https_1.default.createServer(app);
 // connect mongodb
 (function connectMongoose() {
     const uri = process.env.MONGODB_CONNECTION_STRING;
@@ -34,7 +34,7 @@ const server = node_https_1.default.createServer(app);
         .catch((err) => console.error("db error: ", err));
 })();
 // Middlewares
-app.use("/api/uploads", express_1.default.static(node_path_1.default.join(__dirname, "uploads"))); // use express static as middleware
+app.use("/api/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads"))); // use express static as middleware
 app.use(express_1.default.json()); // use express bodyParser as middleware
 app.use((0, cookie_parser_1.default)()); // use cookieParser as middleware
 app.use((0, morgan_1.default)("dev")); // use morgan as middleware
@@ -50,7 +50,7 @@ app.all("*", (req, res, next) => {
 });
 // global error handler
 app.use((err, req, res, next) => {
-    node_fs_1.default.appendFileSync("errors.log", new Date().toLocaleString() + "\t" + err.message + "\n");
+    fs_1.default.appendFileSync("errors.log", new Date().toLocaleString() + "\t" + err.message + "\n");
     // console.log(err);
     const code = err.code && err.code >= 100 && err.code < 600 ? err.code : 500;
     res

@@ -39,19 +39,19 @@ async function _privateFetch(url, options) {
     // Perform the fetch with updated options
     return await (await fetch(url, options)).json();
   } catch (error) {
-
     error.error = error.message;
-    return error
+    return error;
   }
 }
 
 export async function refreshAccessToken() {
   try {
-    const res = await _privateFetch(`https://localhost:3000/api/auth/token`);
+    const res = await _privateFetch(
+      `https://worldwide-react-app-api.onrender.com/api/auth/token`
+    );
     if (res.data) return res.data.token; //token
   } catch (err) {
     console.error(err);
     return false;
   }
 }
-

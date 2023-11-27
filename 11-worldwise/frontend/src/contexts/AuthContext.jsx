@@ -8,7 +8,7 @@ import React, {
 import { privateFetch } from "../services/privateFetch.js";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const url = "https://localhost:3000/api/auth";
+const url = "https://worldwide-react-app-api.onrender.com/api/auth";
 
 const AuthContext = createContext();
 
@@ -59,21 +59,22 @@ export default function AuthProvider({ children }) {
     // get Access Token
 
     (async function () {
-      if(location.pathname.includes("share")){
-        const id = location.pathname.split("/")[2]
-        const url = `https://localhost:3000/api/users/${id}`;
+      if (location.pathname.includes("share")) {
+        const id = location.pathname.split("/")[2];
+        const url = `https://worldwide-react-app-api.onrender.com/api/users/${id}`;
         const res = await privateFetch(`${url}`, {});
         if (res.error) {
           console.error(res.error);
-          navigate("/", { replace: true, state: { from: location } })
+          navigate("/", { replace: true, state: { from: location } });
           return;
         }
         const { user } = res.data;
-        dispatch({ type: "userUpdated", payload: user  });
+        dispatch({ type: "userUpdated", payload: user });
         return;
       }
-      
-      const url = "https://localhost:3000/api/auth/refresh";
+
+      const url =
+        "https://worldwide-react-app-api.onrender.com/api/auth/refresh";
       const res = await privateFetch(`${url}`, {});
       if (res.error) {
         console.error(res.error);
