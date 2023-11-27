@@ -4,5 +4,5 @@ node_modules
 *.txt
 *.log
 *.vscode
+package-lock.json
 
-11-worldwise/backend/localhost-key.pem

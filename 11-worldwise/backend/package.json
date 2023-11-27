@@ -8,7 +8,9 @@
     "start": "run-p -ln js ts ",
     "js": "nodemon ./dist/index.js ",
     "ts": "tsc -w ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"tsc",
+    "server": "node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
