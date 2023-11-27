@@ -1,7 +1,7 @@
 require("dotenv").config();
-import fs from "node:fs";
-import path from "node:path";
-import https from "node:https";
+import fs from "fs";
+import path from "path";
+import https from "https";
 import cors from "cors";
 import morgan from "morgan";
 import mongoose from "mongoose";
