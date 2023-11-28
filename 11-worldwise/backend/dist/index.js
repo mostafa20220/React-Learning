@@ -34,12 +34,11 @@ const server = https_1.default.createServer(app);
         .catch((err) => console.error("db error: ", err));
 })();
 // Middlewares
-app.use("/api/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads"))); // use express static as middleware
-app.use(express_1.default.json()); // use express bodyParser as middleware
-app.use((0, cookie_parser_1.default)()); // use cookieParser as middleware
-app.use((0, morgan_1.default)("dev")); // use morgan as middleware
-// app.use(cors({ origin: "https://worldwide-react-app.onrender.com", credentials: true }));
-app.use((0, cors_1.default)({ credentials: true }));
+app.use("/api/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads")));
+app.use(express_1.default.json());
+app.use((0, cookie_parser_1.default)());
+app.use((0, morgan_1.default)("dev"));
+app.use((0, cors_1.default)({ origin: "https://worldwide-react-app.onrender.com", credentials: true }));
 // Routers
 app.use("/api/cities", cities_router_1.citiesRouter);
 app.use("/api/users", users_router_1.usersRouter);
