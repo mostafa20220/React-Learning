@@ -60,7 +60,7 @@ app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
     "errors.log",
     new Date().toLocaleString() + "\t" + err.message + "\n",
   );
-  // console.log(err);
+  console.log(err);
   const code = err.code && err.code >= 100 && err.code < 600 ? err.code : 500;
   res
     .status(code)

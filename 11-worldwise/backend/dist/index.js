@@ -51,7 +51,7 @@ app.all("*", (req, res, next) => {
 // global error handler
 app.use((err, req, res, next) => {
     fs_1.default.appendFileSync("errors.log", new Date().toLocaleString() + "\t" + err.message + "\n");
-    // console.log(err);
+    console.log(err);
     const code = err.code && err.code >= 100 && err.code < 600 ? err.code : 500;
     res
         .status(code)
