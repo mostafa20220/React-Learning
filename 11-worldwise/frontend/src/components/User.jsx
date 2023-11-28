@@ -12,7 +12,7 @@ function User() {
     if (logout()) navigate("/");
   }
 
-  const avatarUrl = `https://worldwide-react-app-api.onrender.com/api${user.avatar}`;
+  const avatarUrl = `https://worldwide-server.azurewebsites.net/api${user.avatar}`;
 
   const msg = isAuthenticated
     ? `Welcome, ${user.firstName}`

@@ -32,7 +32,7 @@ export default function Share() {
 
   async function handleShare() {
     setIsShareLoading(true);
-    const url = `https://worldwide-react-app-api.onrender.com/api/users/${user._id}`;
+    const url = `https://worldwide-server.azurewebsites.net/api/users/${user._id}`;
 
     const res = await privateFetch(
       `${url}`,

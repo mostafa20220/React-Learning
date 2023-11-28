@@ -47,7 +47,7 @@ async function _privateFetch(url, options) {
 export async function refreshAccessToken() {
   try {
     const res = await _privateFetch(
-      `https://worldwide-react-app-api.onrender.com/api/auth/token`
+      `https://worldwide-server.azurewebsites.net/api/auth/token`
     );
     if (res.data) return res.data.token; //token
   } catch (err) {
