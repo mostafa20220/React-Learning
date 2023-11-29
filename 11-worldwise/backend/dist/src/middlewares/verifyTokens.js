@@ -39,6 +39,7 @@ const verifyTokens = (req, res, next) => {
     }
     if (JSON.stringify(decodedAccessToken) !== JSON.stringify(decodedRefreshToken))
         return next(new helpers_1.AppError(401, "fail", "Invalid Tokens"));
+    console.log("decodedAccessToken: ", decodedAccessToken);
     req.payload = decodedAccessToken;
 };
 exports.verifyTokens = verifyTokens;

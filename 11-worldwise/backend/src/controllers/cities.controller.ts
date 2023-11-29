@@ -22,10 +22,11 @@ import { userModel } from "../modules/users.module";
 export const getCity = asyncWrapper(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const userId = req.payload?.id;
+    console.log("userId: ", userId);
     const cityId = req.params?.cityId;
     const user = await userModel.findOne({ _id: userId });
 
-    if (!user) next(new AppError(404, "fail", "User Not Found"));
+    if (!user) return next(new AppError(404, "fail", "User Not Found"));
 
     console.log("user: ", user);
     console.log("cityId", cityId);
@@ -77,7 +78,7 @@ export const patchCity = asyncWrapper(
       notes === undefined &&
       position === undefined
     )
-      next(
+    return next(
         new AppError(
           400,
           "fail",

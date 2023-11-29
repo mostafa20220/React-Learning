@@ -19,10 +19,11 @@ const users_module_1 = require("../modules/users.module");
 // );
 exports.getCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
     const userId = req.payload?.id;
+    console.log("userId: ", userId);
     const cityId = req.params?.cityId;
     const user = await users_module_1.userModel.findOne({ _id: userId });
     if (!user)
-        next(new helpers_1.AppError(404, "fail", "User Not Found"));
+        return next(new helpers_1.AppError(404, "fail", "User Not Found"));
     console.log("user: ", user);
     console.log("cityId", cityId);
     console.log("city._id", user?.cities[0]._id);
@@ -32,13 +33,15 @@ exports.getCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
     else
         next(new helpers_1.AppError(404, "fail", "City Not Found"));
 });
-exports.postCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res) => {
+exports.postCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
     const userId = req.payload?.id;
     // create the new City
     const { cityName, country, emoji, date, notes, position } = req.body;
     const newCity = { cityName, country, emoji, date, notes, position };
     // save the new City to the db
     const user = await users_module_1.userModel.findOne({ _id: userId });
+    if (!user)
+        return next(new helpers_1.AppError(404, "fail", "User Not Found"));
     user?.cities.push(newCity);
     await user?.save();
     return res
@@ -57,7 +60,7 @@ exports.patchCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
         date === undefined &&
         notes === undefined &&
         position === undefined)
-        next(new helpers_1.AppError(400, "fail", "Invalid Request Body, either 'cityName' or 'country' or 'emoji' or 'date' or 'notes' or 'position' field should be provided"));
+        return next(new helpers_1.AppError(400, "fail", "Invalid Request Body, either 'cityName' or 'country' or 'emoji' or 'date' or 'notes' or 'position' field should be provided"));
     if (cityName !== undefined)
         city.cityName = cityName;
     if (country !== undefined)

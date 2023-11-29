@@ -34,9 +34,9 @@ const allowTo_1 = require("../middlewares/allowTo");
 exports.citiesRouter = express_1.default.Router();
 exports.citiesRouter
     .route("/")
-    .post((0, allowTo_1.allowTo)("user"), validator.postCity, controller.postCity); //TODO: allow to the user only
+    .post((0, allowTo_1.allowTo)("user"), validator.postCity, controller.postCity);
 exports.citiesRouter
     .route("/:cityId")
-    .get(validator.getCity, controller.getCity)
+    .get((0, allowTo_1.allowTo)("user"), validator.getCity, controller.getCity)
     .patch((0, allowTo_1.allowTo)("user"), validator.patchCity, controller.patchCity)
     .delete((0, allowTo_1.allowTo)("user"), validator.deleteCity, controller.deleteCity);

@@ -54,5 +54,6 @@ export const verifyTokens = (
   )
     return next(new AppError(401, "fail", "Invalid Tokens"));
 
+  console.log("decodedAccessToken: ", decodedAccessToken);
   req.payload = decodedAccessToken as Payload;
 };
