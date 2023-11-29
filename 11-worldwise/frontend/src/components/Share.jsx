@@ -30,33 +30,33 @@ export default function Share() {
     return <div className={styles.share}></div>;
   }
 
-  async function handleShare() {
-    setIsShareLoading(true);
-    const url = `https://worldwide-server.azurewebsites.net/api/users/${user._id}`;
+    async function handleShare() {
+      setIsShareLoading(true);
+      const url = `${process.env.SERVER_URL}/api/users/${user._id}`;
 
-    const res = await privateFetch(
-      `${url}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({ shareMode: !isShared }),
-      },
-      token,
-      refresh
-    );
+      const res = await privateFetch(
+        `${url}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ shareMode: !isShared }),
+        },
+        token,
+        refresh
+      );
 
-    setIsShareLoading(false);
+      setIsShareLoading(false);
 
-    if (res.error) {
-      console.error(res.error);
-      if (res.code === 401) {
-        logout();
-        return false;
+      if (res.error) {
+        console.error(res.error);
+        if (res.code === 401) {
+          logout();
+          return false;
+        }
+        return;
       }
-      return;
-    }
 
-    setIsShared((isShared) => !isShared);
-  }
+      setIsShared((isShared) => !isShared);
+    };
 
   // const shareLink = `${window.location.host}/share/${user.email.split("@")[0]}`
   const shareLink = `${window.location.origin}/share/${user._id}`;

@@ -46,9 +46,7 @@ async function _privateFetch(url, options) {
 
 export async function refreshAccessToken() {
   try {
-    const res = await _privateFetch(
-      `https://worldwide-server.azurewebsites.net/api/auth/token`
-    );
+    const res = await _privateFetch(`${process.env.SERVER_URL}/api/auth/token`);
     if (res.data) return res.data.token; //token
   } catch (err) {
     console.error(err);

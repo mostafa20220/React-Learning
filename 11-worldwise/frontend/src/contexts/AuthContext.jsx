@@ -8,7 +8,7 @@ import React, {
 import { privateFetch } from "../services/privateFetch.js";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const url = "https://worldwide-server.azurewebsites.net/api/auth";
+const url = `${process.env.SERVER_URL}/api/auth`;
 
 const AuthContext = createContext();
 
@@ -61,7 +61,7 @@ export default function AuthProvider({ children }) {
     (async function () {
       if (location.pathname.includes("share")) {
         const id = location.pathname.split("/")[2];
-        const url = `https://worldwide-server.azurewebsites.net/api/users/${id}`;
+        const url = `${process.env.SERVER_URL}/api/users/${id}`;
         const res = await privateFetch(`${url}`, {});
         if (res.error) {
           console.error(res.error);
@@ -73,7 +73,7 @@ export default function AuthProvider({ children }) {
         return;
       }
 
-      const url = "https://worldwide-server.azurewebsites.net/api/auth/refresh";
+      const url = `${process.env.SERVER_URL}/api/auth/refresh`;
       const res = await privateFetch(`${url}`, {});
       if (res.error) {
         console.error(res.error);

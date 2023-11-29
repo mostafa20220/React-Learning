@@ -8,7 +8,7 @@ import {
 import { useAuth } from "./AuthContext";
 import { privateFetch } from "../services/privateFetch";
 
-const BASE_URL = "https://worldwide-server.azurewebsites.net/api/cities";
+const BASE_URL = `${process.env.SERVER_URL}/api/cities`;
 
 const CitiesContext = createContext();
 

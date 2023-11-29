@@ -1,5 +1,5 @@
 {
-  "name": "WorldWise-api",
+  "name": "WorldWise-server",
   "version": "1.0.0",
   "description": "test-and-learn",
   "main": "index.ts",

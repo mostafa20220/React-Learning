@@ -12,7 +12,7 @@ function User() {
     if (logout()) navigate("/");
   }
 
-  const avatarUrl = `https://worldwide-server.azurewebsites.net/api${user.avatar}`;
+  const avatarUrl = `${process.env.SERVER_URL}/api${user.avatar}`;
 
   const msg = isAuthenticated
     ? `Welcome, ${user.firstName}`
