@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const https_1 = __importDefault(require("https"));
+const http_1 = __importDefault(require("http"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -22,7 +22,7 @@ const auth_router_1 = require("./src/routers/auth.router");
 // };
 const app = (0, express_1.default)();
 // const server = https.createServer(options, app);
-const server = https_1.default.createServer(app);
+const server = http_1.default.createServer(app);
 // connect mongodb
 (function connectMongoose() {
     const uri = process.env.MONGODB_CONNECTION_STRING;
@@ -68,5 +68,5 @@ app.use((err, req, res, next) => {
 // lunch the server
 const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
-    console.log("The Server is Listening on port" + port);
+    console.log("The Server is Listening on port: " + port);
 });

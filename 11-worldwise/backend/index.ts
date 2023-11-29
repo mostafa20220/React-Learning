@@ -1,7 +1,7 @@
 require("dotenv").config();
 import fs from "fs";
 import path from "path";
-import https from "https";
+import http from "http";
 import cors from "cors";
 import morgan from "morgan";
 import mongoose from "mongoose";
@@ -21,7 +21,7 @@ import { authRouter } from "./src/routers/auth.router";
 const app = express();
 
 // const server = https.createServer(options, app);
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 // connect mongodb
 (function connectMongoose() {
@@ -78,5 +78,5 @@ app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
 // lunch the server
 const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
-  console.log("The Server is Listening on port" + port);
+  console.log("The Server is Listening on port: " + port);
 });
