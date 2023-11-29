@@ -30,7 +30,7 @@ const server = http.createServer(app);
   mongoose
     .connect(uri)
     .then((_) => console.log("mongoose is connected successfully"))
-    .catch((err) => console.error("db error: ", err));
+    .catch((err) => console.error("Failed to connect to mongoDB, \nError:\n", err));
 })();
 
 // Middlewares
@@ -45,13 +45,8 @@ app.use(
   })
 );
 
-app.use("*",(req, res, next) => {
-  console.log("req: ",req);
-  next();
-});
 
 // Routers
-app.use("/", (req, res) => res.send("Hello World!"));
 app.use("/api/cities", citiesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
@@ -68,7 +63,7 @@ app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
     "errors.log",
     new Date().toLocaleString() + "\t" + err.message + "\n"
   );
-  console.log(err);
+  console.log(`${new Date().toLocaleString()}:=>  ${err}`);
   const code = err.code && err.code >= 100 && err.code < 600 ? err.code : 500;
   res
     .status(code)
