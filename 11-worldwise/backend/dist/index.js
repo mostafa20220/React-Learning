@@ -38,8 +38,16 @@ app.use("/api/uploads", express_1.default.static(path_1.default.join(__dirname, 
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
-app.use((0, cors_1.default)({ origin: "https://worldwide-react-app.onrender.com", credentials: true }));
+app.use((0, cors_1.default)({
+    origin: "https://worldwide-react-app.onrender.com",
+    credentials: true,
+}));
+app.use("*", (req, res, next) => {
+    console.log("req: ", req);
+    next();
+});
 // Routers
+app.use("/", (req, res) => res.send("Hello World!"));
 app.use("/api/cities", cities_router_1.citiesRouter);
 app.use("/api/users", users_router_1.usersRouter);
 app.use("/api/auth", auth_router_1.authRouter);
@@ -58,7 +66,7 @@ app.use((err, req, res, next) => {
         .json((0, helpers_1.createRes)(err.statusText || "error", err.message, code));
 });
 // lunch the server
-const port = process.env.PORT;
+const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
-    console.log("The Server is Listening on https://localhost:" + port);
+    console.log("The Server is Listening on port" + port);
 });

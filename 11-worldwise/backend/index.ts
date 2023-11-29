@@ -13,17 +13,15 @@ import { AppError, createRes } from "./src/utils/helpers";
 import { usersRouter } from "./src/routers/users.router";
 import { authRouter } from "./src/routers/auth.router";
 
-
 // const options = {
-  // key: fs.readFileSync('localhost-key.pem'),
-  // cert: fs.readFileSync('localhost.pem'),
+// key: fs.readFileSync('localhost-key.pem'),
+// cert: fs.readFileSync('localhost.pem'),
 // };
 
 const app = express();
 
 // const server = https.createServer(options, app);
 const server = https.createServer(app);
-
 
 // connect mongodb
 (function connectMongoose() {
@@ -36,17 +34,27 @@ const server = https.createServer(app);
 })();
 
 // Middlewares
-app.use("/api/uploads", express.static(path.join(__dirname, "uploads"))); 
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan("dev")); 
-app.use(cors({ origin: "https://worldwide-react-app.onrender.com", credentials: true }));
+app.use(morgan("dev"));
+app.use(
+  cors({
+    origin: "https://worldwide-react-app.onrender.com",
+    credentials: true,
+  })
+);
 
+app.use("*",(req, res, next) => {
+  console.log("req: ",req);
+  next();
+});
 
 // Routers
+app.use("/", (req, res) => res.send("Hello World!"));
 app.use("/api/cities", citiesRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/auth", authRouter); 
+app.use("/api/auth", authRouter);
 
 // Handling wrong routers
 app.all("*", (req, res, next) => {
@@ -58,17 +66,17 @@ app.all("*", (req, res, next) => {
 app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
   fs.appendFileSync(
     "errors.log",
-    new Date().toLocaleString() + "\t" + err.message + "\n",
+    new Date().toLocaleString() + "\t" + err.message + "\n"
   );
   console.log(err);
   const code = err.code && err.code >= 100 && err.code < 600 ? err.code : 500;
   res
     .status(code)
-    .json(createRes(err.statusText || "error", err.message,code));
+    .json(createRes(err.statusText || "error", err.message, code));
 });
 
 // lunch the server
-const port = process.env.PORT;
+const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
-  console.log("The Server is Listening on https://localhost:" + port);
+  console.log("The Server is Listening on port" + port);
 });
