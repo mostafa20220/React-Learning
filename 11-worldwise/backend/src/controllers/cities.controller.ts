@@ -38,7 +38,7 @@ export const getCity = asyncWrapper(
 );
 
 export const postCity = asyncWrapper(
-  async (req: AuthRequest, res: Response) => {
+  async (req: AuthRequest, res: Response, next:NextFunction) => {
     const userId = req.payload?.id;
 
     // create the new City
@@ -48,6 +48,9 @@ export const postCity = asyncWrapper(
 
     // save the new City to the db
     const user = await userModel.findOne({ _id: userId });
+
+    if (!user) return next(new AppError(404, "fail", "User Not Found"));
+
     user?.cities.push(newCity);
     await user?.save();
 
