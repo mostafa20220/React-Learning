@@ -6,9 +6,9 @@ import {
   useReducer,
 } from "react";
 import { useAuth } from "./AuthContext";
-import { privateFetch } from "../services/privateFetch";
+import { BASE_URL as SERVER_URL, privateFetch } from "../services/privateFetch";
 
-const BASE_URL = `${process.env.SERVER_URL}/api/cities`;
+const BASE_URL = `${SERVER_URL}/api/cities`;
 
 const CitiesContext = createContext();
 

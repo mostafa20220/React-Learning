@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import styles from "./User.module.css";
 import { useEffect } from "react";
+import { BASE_URL } from "../services/privateFetch";
 
 function User() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -12,7 +13,7 @@ function User() {
     if (logout()) navigate("/");
   }
 
-  const avatarUrl = `${process.env.SERVER_URL}/api${user.avatar}`;
+  const avatarUrl = `${BASE_URL}/api${user.avatar}`;
 
   const msg = isAuthenticated
     ? `Welcome, ${user.firstName}`

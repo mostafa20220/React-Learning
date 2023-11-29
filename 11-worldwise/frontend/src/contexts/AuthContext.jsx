@@ -5,10 +5,10 @@ import React, {
   useMemo,
   useReducer,
 } from "react";
-import { privateFetch } from "../services/privateFetch.js";
+import { BASE_URL, privateFetch } from "../services/privateFetch.js";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const url = `${process.env.SERVER_URL}/api/auth`;
+const url = `${BASE_URL}/api/auth`;
 
 const AuthContext = createContext();
 
@@ -61,7 +61,7 @@ export default function AuthProvider({ children }) {
     (async function () {
       if (location.pathname.includes("share")) {
         const id = location.pathname.split("/")[2];
-        const url = `${process.env.SERVER_URL}/api/users/${id}`;
+        const url = `${BASE_URL}/api/users/${id}`;
         const res = await privateFetch(`${url}`, {});
         if (res.error) {
           console.error(res.error);
@@ -73,7 +73,7 @@ export default function AuthProvider({ children }) {
         return;
       }
 
-      const url = `${process.env.SERVER_URL}/api/auth/refresh`;
+      const url = `${BASE_URL}/api/auth/refresh`;
       const res = await privateFetch(`${url}`, {});
       if (res.error) {
         console.error(res.error);

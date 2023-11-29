@@ -1,3 +1,5 @@
+export const BASE_URL = "https://worldwide-react-app-api.onrender.com";
+
 export async function privateFetch(url, options, token, refreshFnc) {
   if (token) {
     const tokenHeder = { Authorization: `Bearer ${token}` };
@@ -46,7 +48,7 @@ async function _privateFetch(url, options) {
 
 export async function refreshAccessToken() {
   try {
-    const res = await _privateFetch(`${process.env.SERVER_URL}/api/auth/token`);
+    const res = await _privateFetch(`${BASE_URL}/api/auth/token`);
     if (res.data) return res.data.token; //token
   } catch (err) {
     console.error(err);

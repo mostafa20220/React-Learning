@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import styles from "./Share.module.css";
-import { privateFetch } from "../services/privateFetch";
+import { BASE_URL, privateFetch } from "../services/privateFetch";
 import { useCities } from "../contexts/CitiesContext";
 
 export default function Share() {
@@ -30,33 +30,33 @@ export default function Share() {
     return <div className={styles.share}></div>;
   }
 
-    async function handleShare() {
-      setIsShareLoading(true);
-      const url = `${process.env.SERVER_URL}/api/users/${user._id}`;
+  async function handleShare() {
+    setIsShareLoading(true);
+    const url = `${BASE_URL}/api/users/${user._id}`;
 
-      const res = await privateFetch(
-        `${url}`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({ shareMode: !isShared }),
-        },
-        token,
-        refresh
-      );
+    const res = await privateFetch(
+      `${url}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ shareMode: !isShared }),
+      },
+      token,
+      refresh
+    );
 
-      setIsShareLoading(false);
+    setIsShareLoading(false);
 
-      if (res.error) {
-        console.error(res.error);
-        if (res.code === 401) {
-          logout();
-          return false;
-        }
-        return;
+    if (res.error) {
+      console.error(res.error);
+      if (res.code === 401) {
+        logout();
+        return false;
       }
+      return;
+    }
 
-      setIsShared((isShared) => !isShared);
-    };
+    setIsShared((isShared) => !isShared);
+  }
 
   // const shareLink = `${window.location.host}/share/${user.email.split("@")[0]}`
   const shareLink = `${window.location.origin}/share/${user._id}`;
