@@ -8,7 +8,7 @@ const allowTo = (...roles) => {
     return (req, res, next) => {
         (0, verifyTokens_1.verifyTokens)(req, res, next);
         const user = req?.payload;
-        console.log("from verify, user: ", user);
+        // console.log("from verify, user: ", user);
         if (!user)
             return next(new helpers_1.AppError(401, "fail", "req.payload is undefined"));
         if (!roles.includes(user.role) && !roles.includes("all")) {

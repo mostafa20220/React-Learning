@@ -30,7 +30,6 @@ export const verifyTokens = (
     delete decodedRefreshToken.iat;
     delete decodedRefreshToken.exp;
   } catch (err) {
-    console.log("verify token - err: ", err);
     next(new AppError(401, "fail", "Invalid Refresh Token"));
   }
 
@@ -45,7 +44,6 @@ export const verifyTokens = (
     delete decodedAccessToken.iat;
     delete decodedAccessToken.exp;
   } catch (err) {
-    console.log("verify token - err: ", err);
     return next(new AppError(401, "fail", "Invalid Access Token"));
   }
 
@@ -54,6 +52,5 @@ export const verifyTokens = (
   )
     return next(new AppError(401, "fail", "Invalid Tokens"));
 
-  console.log("decodedAccessToken: ", decodedAccessToken);
   req.payload = decodedAccessToken as Payload;
 };

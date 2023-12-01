@@ -9,7 +9,7 @@ export const allowTo = (...roles: Role[]) => {
     verifyTokens(req, res, next);
 
     const user = req?.payload;
-    console.log("from verify, user: ", user);
+    // console.log("from verify, user: ", user);
     if (!user)
       return next(new AppError(401, "fail", "req.payload is undefined"));
     if (!roles.includes(user.role) && !roles.includes("all")) {

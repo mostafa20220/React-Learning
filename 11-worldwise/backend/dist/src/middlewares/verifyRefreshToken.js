@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const helpers_1 = require("../utils/helpers");
 const verifyRefreshToken = (req, res, next) => {
     const REFRESH_TOKEN = req.cookies?.REFRESH_TOKEN;
-    console.log("REFRESH_TOKEN: ", REFRESH_TOKEN);
+    // console.log("REFRESH_TOKEN: ", REFRESH_TOKEN);
     // refresh token is required
     if (!REFRESH_TOKEN)
         return next(new helpers_1.AppError(401, "fail", "REFRESH_TOKEN is Required"));
@@ -21,7 +21,7 @@ const verifyRefreshToken = (req, res, next) => {
         next();
     }
     catch (err) {
-        console.log("verify token - err: ", err);
+        // console.log("verify token - err: ", err);
         next(new helpers_1.AppError(401, "fail", "Invalid Refresh Token"));
     }
 };

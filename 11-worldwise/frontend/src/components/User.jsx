@@ -9,8 +9,7 @@ function User() {
 
   if (!user) return null;
 
-
-  const avatarUrl = `${BASE_URL}/api${user.avatar}`;
+  const avatarUrl = `${BASE_URL}/api${user?.avatar}`;
 
   const msg = isAuthenticated
     ? `Welcome, ${user.firstName}`

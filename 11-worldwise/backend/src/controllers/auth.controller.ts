@@ -57,8 +57,15 @@ export const register = asyncWrapper(
       sameSite: true,
     });
 
-    res.status(201).json(createRes("success", { token: accessToken }));
-  }
+    const { _id, firstName:fn, lastName:ln, email: userMail, avatar:av, cities, shareMode } = addedUser;
+
+    res.json(
+      createRes("success", {
+        token: accessToken,
+        user: { _id, firstName:fn, lastName:ln, email: userMail, avatar:av, cities, shareMode },
+      })
+    );
+    }
 );
 
 export const login = asyncWrapper(async (req: Request, res: Response) => {

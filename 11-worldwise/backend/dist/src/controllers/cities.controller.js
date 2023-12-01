@@ -19,14 +19,13 @@ const users_module_1 = require("../modules/users.module");
 // );
 exports.getCity = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
     const userId = req.payload?.id;
-    console.log("userId: ", userId);
     const cityId = req.params?.cityId;
     const user = await users_module_1.userModel.findOne({ _id: userId });
     if (!user)
         return next(new helpers_1.AppError(404, "fail", "User Not Found"));
-    console.log("user: ", user);
-    console.log("cityId", cityId);
-    console.log("city._id", user?.cities[0]._id);
+    // console.log("user: ", user);
+    // console.log("cityId", cityId);
+    // console.log("city._id", user?.cities[0]._id);
     const foundCity = user?.cities.find((city) => city._id == cityId);
     if (foundCity)
         res.json((0, helpers_1.createRes)("success", { city: foundCity }));

@@ -42,7 +42,11 @@ exports.register = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
         path: "/",
         sameSite: true,
     });
-    res.status(201).json((0, helpers_1.createRes)("success", { token: accessToken }));
+    const { _id, firstName: fn, lastName: ln, email: userMail, avatar: av, cities, shareMode } = addedUser;
+    res.json((0, helpers_1.createRes)("success", {
+        token: accessToken,
+        user: { _id, firstName: fn, lastName: ln, email: userMail, avatar: av, cities, shareMode },
+    }));
 });
 exports.login = (0, asyncWrapper_1.asyncWrapper)(async (req, res) => {
     const { email, password } = req.body;

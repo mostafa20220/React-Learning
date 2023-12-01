@@ -23,7 +23,6 @@ const verifyTokens = (req, res, next) => {
         delete decodedRefreshToken.exp;
     }
     catch (err) {
-        console.log("verify token - err: ", err);
         next(new helpers_1.AppError(401, "fail", "Invalid Refresh Token"));
     }
     let decodedAccessToken;
@@ -34,12 +33,10 @@ const verifyTokens = (req, res, next) => {
         delete decodedAccessToken.exp;
     }
     catch (err) {
-        console.log("verify token - err: ", err);
         return next(new helpers_1.AppError(401, "fail", "Invalid Access Token"));
     }
     if (JSON.stringify(decodedAccessToken) !== JSON.stringify(decodedRefreshToken))
         return next(new helpers_1.AppError(401, "fail", "Invalid Tokens"));
-    console.log("decodedAccessToken: ", decodedAccessToken);
     req.payload = decodedAccessToken;
 };
 exports.verifyTokens = verifyTokens;

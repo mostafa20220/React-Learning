@@ -16,22 +16,40 @@ function reducer(state, action) {
   switch (action.type) {
     // case "registered":
 
+    case "error":
+      return {
+        ...state,
+        isError: true,
+        error: action.payload,
+        isLoading: false,
+      };
+
+    case "loading":
+      return { ...state, isLoading: true };
+
     case "loggedIn":
       return {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
         isAuthenticated: true,
+        isLoading: false,
       };
 
     case "loggedOut":
-      return { ...state, user: null, token: null, isAuthenticated: false };
+      return {
+        ...state,
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+      };
 
     case "refreshed":
       return { ...state, token: action.payload };
 
     case "userUpdated":
-      return { ...state, user: action.payload };
+      return { ...state, user: action.payload, isLoading: false };
 
     default:
       throw new Error(`Unknown action type!: ${action.type}`);
@@ -43,14 +61,17 @@ function reducer(state, action) {
 const initialState = {
   user: null,
   token: null,
+  error: null,
   isAuthenticated: false,
+  isLoading: false,
+  isError: false,
 };
 
 export default function AuthProvider({ children }) {
-  const [{ user, token, isAuthenticated }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    { user, token, isAuthenticated, isLoading, isError, error },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,27 +106,54 @@ export default function AuthProvider({ children }) {
     })();
   }, []);
 
-  const register = async (user) => {
+  const register = async (userData) => {
+    dispatch({ type: "loading" });
     const res = await privateFetch(`${url}/register`, {
       method: "POST",
-      body: JSON.stringify(user),
+      body: JSON.stringify(userData),
     });
 
-    if (res.error) return false;
-    else {
-      const { user, token } = res.data;
-      dispatch({ type: "loggedIn", payload: { user, token } });
-      return true;
+    if (res.error) {
+      console.error(res.error);
+      if (res.code === 500) {
+        dispatch({
+          type: "error",
+          payload: "Internal Server Error, please try again later.",
+        });
+        return false;
+      } else if (res.code !== 401) {
+        dispatch({ type: "error", payload: res.error });
+        return false;
+      }
     }
+
+    const { user, token } = res.data;
+    dispatch({ type: "loggedIn", payload: { user: userData, token } });
+    return true;
   };
 
   const login = async (userCredentials) => {
+    dispatch({ type: "loading" });
+
     const res = await privateFetch(`${url}/login`, {
       method: "POST",
       body: JSON.stringify(userCredentials),
     });
 
-    if (res.error) return false;
+    if (res.error) {
+      console.log(res.error);
+      if (res.code === 500) {
+        dispatch({
+          type: "error",
+          payload: "Internal Server Error, please try again later.",
+        });
+        console.error(res.error);
+        return false;
+      } else if (res.code !== 401) {
+        dispatch({ type: "error", payload: res.error });
+        return false;
+      }
+    }
 
     const { user, token } = res.data;
     dispatch({ type: "loggedIn", payload: { user, token } });
@@ -113,11 +161,25 @@ export default function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    dispatch({ type: "loading" });
     const res = await privateFetch(`${url}/logout`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (res.error && res.code !== 401) return false;
+    if (res.error) {
+      console.log(res.error);
+      if (res.code === 500) {
+        dispatch({
+          type: "error",
+          payload: "Internal Server Error, please try again later.",
+        });
+        console.error(res.error);
+        return false;
+      } else if (res.code !== 401) {
+        dispatch({ type: "error", payload: res.error });
+        return false;
+      }
+    }
 
     dispatch({ type: "loggedOut" });
     navigate("/", { replace: true, state: { from: location } });
@@ -133,12 +195,26 @@ export default function AuthProvider({ children }) {
       user,
       token,
       isAuthenticated,
+      isLoading,
+      isError,
+      error,
       login,
       logout,
       refresh,
       register,
     }),
-    [user, token, isAuthenticated, login, logout, refresh, register]
+    [
+      user,
+      token,
+      isAuthenticated,
+      isLoading,
+      isError,
+      error,
+      login,
+      logout,
+      refresh,
+      register,
+    ]
   );
 
   return (

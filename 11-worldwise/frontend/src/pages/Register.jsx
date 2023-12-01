@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import Message from "../components/Message";
+import Error from "../components/Error";
 import PageNav from "../components/PageNav";
 import styles from "./Auth.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import Spinner from "../components/Spinner";
 
 export default function Register() {
-  // PRE-FILL FOR DEV PURPOSES
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { login,register, isAuthenticated } = useAuth();
+  const {register,isAuthenticated,isLoading,isError,error: authError} = useAuth();
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
+
     e.preventDefault();
     const user = {
       firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
@@ -24,19 +25,16 @@ export default function Register() {
       email,
       password,
     };
-    setError(null);
-    register(user)
-      .then((res) => {
-        if (res.error) {
-          setError(res.error);
-        } else {
-          login({ email, password });
-        }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+
+    await register(user);
+    if (isError) setError(authError);
   }
+
+
+  useEffect(() => {
+  setError(authError);
+  }, [authError]);
+
 
   useEffect(() => {
     if (isAuthenticated) navigate("/app", { replace: true });
@@ -51,11 +49,12 @@ export default function Register() {
           <div className={styles.col}>
             <label htmlFor="firstName">First Name</label>
             <input
+              required
               type="text"
               id="firstName"
               onChange={(e) => {
-                setError(null);
                 setFirstName(e.target.value);
+                setError(null);
               }}
               value={firstName}
               autoComplete="on"
@@ -64,11 +63,12 @@ export default function Register() {
           <div className={styles.col}>
             <label htmlFor="lastName">Last Name</label>
             <input
+              required
               type="text"
               id="lastName"
               onChange={(e) => {
-                setError(null);
                 setLastName(e.target.value);
+                setError(null);
               }}
               value={lastName}
               autoComplete="on"
@@ -78,20 +78,21 @@ export default function Register() {
         <div className={styles.col}>
           <label htmlFor="email">Email Address</label>
           <input
+            required
             type="email"
             id="email"
             onChange={(e) => {
-              setError(null);
               setEmail(e.target.value);
+              setError(null);
             }}
             value={email}
             autoComplete="on"
-          />  
+          />
         </div>
-
         <div className={styles.col}>
           <label htmlFor="password">Password</label>
           <input
+            required
             type="password"
             id="password"
             onChange={(e) => {
@@ -101,9 +102,10 @@ export default function Register() {
             value={password}
           />
         </div>
-
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button type="primary">Register</Button>
+          <Button type="primary" disabled={isLoading}>
+            {isLoading ? "loading..." : "Register"}
+          </Button>
           <p style={{ fontSize: "1.2rem" }}>
             you have an account already?{" "}
             <NavLink
@@ -118,7 +120,8 @@ export default function Register() {
             </NavLink>
           </p>
         </div>
-        {error && <Message message={error} />}
+        {error && <Error message={error} />}
+        {isLoading && <Spinner />}
       </form>
     </main>
   );

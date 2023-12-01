@@ -4,26 +4,35 @@ import { useAuth } from "../contexts/AuthContext";
 import styles from "./Auth.module.css";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import Message from "../components/Message";
+import Error from "../components/Error";
+import Spinner from "../components/Spinner";
 
 export default function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { login, isAuthenticated } = useAuth();
+  const {
+    login,
+    isAuthenticated,
+    isLoading,
+    isError,
+    error: authError,
+  } = useAuth();
+
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-
-    setError(null);
-    if (!(await login({ email, password })))
-      setError(
-        "The username or password you entered is incorrect. Please try again"
-      );
+    login({ email, password });
   }
 
+
   useEffect(() => {
+    setError(authError);
+  }, [authError]);
+
+  useEffect(() => {
+    // setError(null);
     if (isAuthenticated) navigate("/app", { replace: true });
   }, [isAuthenticated]);
 
@@ -38,10 +47,11 @@ export default function Login() {
             type="email"
             id="email"
             onChange={(e) => {
-              setError(null);
               setEmail(e.target.value);
+              setError(null);
             }}
             value={email}
+            required
             autoComplete="on"
           />
         </div>
@@ -49,6 +59,7 @@ export default function Login() {
         <div className={styles.col}>
           <label htmlFor="password">Password</label>
           <input
+            required
             type="password"
             id="password"
             onChange={(e) => {
@@ -60,7 +71,9 @@ export default function Login() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button type="primary">Login</Button>
+          <Button type="primary" disabled={isLoading}>
+            {isLoading ? "loading..." : "login"}
+          </Button>
           <p style={{ fontSize: "1.2rem" }}>
             Don't have an account?{" "}
             <NavLink
@@ -75,7 +88,9 @@ export default function Login() {
             </NavLink>
           </p>
         </div>
-        {error && <Message message={error} />}
+
+        {error && <Error message={authError} />}
+        {isLoading && <Spinner />}
       </form>
     </main>
   );

@@ -10,7 +10,7 @@ export const verifyRefreshToken = (
 ) => {
   const REFRESH_TOKEN = req.cookies?.REFRESH_TOKEN as string;
   
-  console.log("REFRESH_TOKEN: ", REFRESH_TOKEN);
+  // console.log("REFRESH_TOKEN: ", REFRESH_TOKEN);
 
   // refresh token is required
   if (!REFRESH_TOKEN)
@@ -29,7 +29,7 @@ export const verifyRefreshToken = (
     req.payload = decoded as Payload;
     next();
   } catch (err) {
-    console.log("verify token - err: ", err);
+    // console.log("verify token - err: ", err);
     next(new AppError(401, "fail", "Invalid Refresh Token"));
   }
 };
