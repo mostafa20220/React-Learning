@@ -40,12 +40,20 @@ exports.register = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
         maxAge: (0, jwt_1.tokenDurationToString)("refresh") * 1000,
         secure: true,
         path: "/",
-        sameSite: true,
+        sameSite: "none",
     });
-    const { _id, firstName: fn, lastName: ln, email: userMail, avatar: av, cities, shareMode } = addedUser;
+    const { _id, firstName: fn, lastName: ln, email: userMail, avatar: av, cities, shareMode, } = addedUser;
     res.json((0, helpers_1.createRes)("success", {
         token: accessToken,
-        user: { _id, firstName: fn, lastName: ln, email: userMail, avatar: av, cities, shareMode },
+        user: {
+            _id,
+            firstName: fn,
+            lastName: ln,
+            email: userMail,
+            avatar: av,
+            cities,
+            shareMode,
+        },
     }));
 });
 exports.login = (0, asyncWrapper_1.asyncWrapper)(async (req, res) => {
@@ -65,16 +73,23 @@ exports.login = (0, asyncWrapper_1.asyncWrapper)(async (req, res) => {
     res.cookie("REFRESH_TOKEN", refreshToken, {
         httpOnly: true,
         maxAge: (0, jwt_1.tokenDurationToString)("refresh") * 1000,
-        // secure: true,
+        secure: true,
         path: "/",
-        // sameSite: "none",
-        // domain:"localhost"
+        sameSite: "none",
     });
     // remove the password, role, and the __v from the user object
-    const { _id, firstName, lastName, email: userMail, avatar, cities, shareMode } = user;
+    const { _id, firstName, lastName, email: userMail, avatar, cities, shareMode, } = user;
     res.json((0, helpers_1.createRes)("success", {
         token: accessToken,
-        user: { _id, firstName, lastName, email: userMail, avatar, cities, shareMode },
+        user: {
+            _id,
+            firstName,
+            lastName,
+            email: userMail,
+            avatar,
+            cities,
+            shareMode,
+        },
     }));
 });
 exports.logout = (0, asyncWrapper_1.asyncWrapper)(async (req, res, next) => {
