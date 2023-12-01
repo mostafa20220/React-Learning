@@ -54,18 +54,34 @@ export const register = asyncWrapper(
       maxAge: tokenDurationInSeconds("refresh") * 1000,
       secure: true,
       path: "/",
-      sameSite: true,
+      sameSite: "none",
     });
 
-    const { _id, firstName:fn, lastName:ln, email: userMail, avatar:av, cities, shareMode } = addedUser;
+    const {
+      _id,
+      firstName: fn,
+      lastName: ln,
+      email: userMail,
+      avatar: av,
+      cities,
+      shareMode,
+    } = addedUser;
 
     res.json(
       createRes("success", {
         token: accessToken,
-        user: { _id, firstName:fn, lastName:ln, email: userMail, avatar:av, cities, shareMode },
+        user: {
+          _id,
+          firstName: fn,
+          lastName: ln,
+          email: userMail,
+          avatar: av,
+          cities,
+          shareMode,
+        },
       })
     );
-    }
+  }
 );
 
 export const login = asyncWrapper(async (req: Request, res: Response) => {
@@ -94,18 +110,36 @@ export const login = asyncWrapper(async (req: Request, res: Response) => {
   res.cookie("REFRESH_TOKEN", refreshToken, {
     httpOnly: true,
     maxAge: tokenDurationInSeconds("refresh") * 1000,
-    // secure: true,
+    secure: true,
     path: "/",
-    // sameSite: "none",
-    // domain:"localhost"
+    sameSite: "none",
   });
+
+
   // remove the password, role, and the __v from the user object
-  const { _id, firstName, lastName, email: userMail, avatar, cities, shareMode } = user;
+  
+  const {
+    _id,
+    firstName,
+    lastName,
+    email: userMail,
+    avatar,
+    cities,
+    shareMode,
+  } = user;
 
   res.json(
     createRes("success", {
       token: accessToken,
-      user: { _id, firstName, lastName, email: userMail, avatar, cities, shareMode },
+      user: {
+        _id,
+        firstName,
+        lastName,
+        email: userMail,
+        avatar,
+        cities,
+        shareMode,
+      },
     })
   );
 });
@@ -119,7 +153,7 @@ export const logout = asyncWrapper(
 
     const user = await userModel.findOne({ _id: payload.id });
     if (!user) return next(new AppError(404, "fail", "User Not Found"));
-    res.clearCookie("REFRESH_TOKEN",{secure:true,sameSite:"none"});
+    res.clearCookie("REFRESH_TOKEN", { secure: true, sameSite: "none" });
     if (!user?.REFRESH_TOKEN)
       next(new AppError(400, "fail", "User Already Logged Out"));
 

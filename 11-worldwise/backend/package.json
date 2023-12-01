@@ -10,7 +10,7 @@
     "ts": "tsc -w ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm install",
-    "oldStart": "run-p -ln js ts "
+    "oldStart": "run -p -ln js ts "
   },
   "author": "",
   "license": "ISC",
