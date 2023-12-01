@@ -57,7 +57,7 @@ export const postCity = asyncWrapper(
 
     return res
       .status(201)
-      .json(createRes("success", { city: user?.cities.at(-1) }));
+      .json(createRes("success", { city: user?.cities[user?.cities.length - 1] }));
   }
 );
 
