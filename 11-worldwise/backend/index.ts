@@ -2,6 +2,7 @@ require("dotenv").config();
 import fs from "fs";
 import path from "path";
 import http from "http";
+import https from "https";
 import cors from "cors";
 import morgan from "morgan";
 import mongoose from "mongoose";
@@ -13,15 +14,15 @@ import { AppError, createRes } from "./src/utils/helpers";
 import { usersRouter } from "./src/routers/users.router";
 import { authRouter } from "./src/routers/auth.router";
 
-// const options = {
-// key: fs.readFileSync('localhost-key.pem'),
-// cert: fs.readFileSync('localhost.pem'),
-// };
+const options = {
+key: fs.readFileSync('localhost-key.pem'),
+cert: fs.readFileSync('localhost.pem'),
+};
 
 const app = express();
 
-// const server = https.createServer(options, app);
-const server = http.createServer(app);
+const server = https.createServer(options, app);
+// const server = http.createServer(app);
 
 // connect mongodb
 (function connectMongoose() {
@@ -38,13 +39,14 @@ app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(
-  cors({
-    origin: "https://worldwide-react-app.onrender.com",
-    credentials: true,
-  })
-);
+// app.use(
+  // cors({
+//     origin: ["https://worldwide-react-app.onrender.com","http://localhost:5173"],
+//     credentials: true,
+//   })
+// );
 
+app.use(cors({ credentials: true, origin: "https://localhost:5173" }));
 
 // Routers
 app.use("/api/cities", citiesRouter);
@@ -75,3 +77,6 @@ const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
   console.log("The Server is Listening on port: " + port);
 });
+
+// var test = [1,2,3,4] 
+// console.log(test.reverse());

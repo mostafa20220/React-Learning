@@ -65,6 +65,7 @@ function CitiesProvider({ children }) {
   );
 
   useEffect(() => {
+    if (!user) return;
     dispatch({ type: "loading" });
     if (user?.cities)
       dispatch({ type: "cities/loaded", payload: user?.cities });
@@ -107,7 +108,7 @@ function CitiesProvider({ children }) {
       method: "POST",
       body: JSON.stringify(city),
     });
-    console.log("res: ", res);
+    // console.log("res: ", res);
     if (res.error) dispatch({ type: "error", payload: res.error });
     else dispatch({ type: "city/added", payload: res.data.city });
   }

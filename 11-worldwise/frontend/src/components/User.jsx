@@ -9,9 +9,6 @@ function User() {
 
   if (!user) return null;
 
-  function logoutHandler() {
-    if (logout()) navigate("/");
-  }
 
   const avatarUrl = `${BASE_URL}/api${user.avatar}`;
 
@@ -24,7 +21,7 @@ function User() {
       <img src={avatarUrl} alt={user.firstName} />
       <span>{msg}</span>
       {isAuthenticated && (
-        <button className={styles.logout} onClick={logoutHandler}>
+        <button className={styles.logout} onClick={logout}>
           Logout
         </button>
       )}

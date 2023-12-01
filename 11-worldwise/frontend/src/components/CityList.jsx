@@ -15,9 +15,11 @@ export default function CityList() {
       <Message message="To get started, add a city by clicking on a city on the map" />
     );
 
+  const reversedCities = structuredClone(cities).reverse();
+
   return (
     <ul className={styles.cityList}>
-      {cities.map((city) => (
+      {reversedCities.map((city) => (
         <CityItem key={city._id} city={city}></CityItem>
       ))}
     </ul>

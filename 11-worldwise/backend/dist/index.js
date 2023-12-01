@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const http_1 = __importDefault(require("http"));
+const https_1 = __importDefault(require("https"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -16,13 +16,13 @@ const cities_router_1 = require("./src/routers/cities.router");
 const helpers_1 = require("./src/utils/helpers");
 const users_router_1 = require("./src/routers/users.router");
 const auth_router_1 = require("./src/routers/auth.router");
-// const options = {
-// key: fs.readFileSync('localhost-key.pem'),
-// cert: fs.readFileSync('localhost.pem'),
-// };
+const options = {
+    key: fs_1.default.readFileSync('localhost-key.pem'),
+    cert: fs_1.default.readFileSync('localhost.pem'),
+};
 const app = (0, express_1.default)();
-// const server = https.createServer(options, app);
-const server = http_1.default.createServer(app);
+const server = https_1.default.createServer(options, app);
+// const server = http.createServer(app);
 // connect mongodb
 (function connectMongoose() {
     const uri = process.env.MONGODB_CONNECTION_STRING;
@@ -38,10 +38,13 @@ app.use("/api/uploads", express_1.default.static(path_1.default.join(__dirname, 
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
-app.use((0, cors_1.default)({
-    origin: "https://worldwide-react-app.onrender.com",
-    credentials: true,
-}));
+// app.use(
+// cors({
+//     origin: ["https://worldwide-react-app.onrender.com","http://localhost:5173"],
+//     credentials: true,
+//   })
+// );
+app.use((0, cors_1.default)({ credentials: true, origin: "https://localhost:5173" }));
 // Routers
 app.use("/api/cities", cities_router_1.citiesRouter);
 app.use("/api/users", users_router_1.usersRouter);
@@ -65,3 +68,5 @@ const port = process.env.PORT ?? 8080;
 server.listen(port, () => {
     console.log("The Server is Listening on port: " + port);
 });
+// var test = [1,2,3,4] 
+// console.log(test.reverse());

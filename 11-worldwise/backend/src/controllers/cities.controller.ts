@@ -52,6 +52,7 @@ export const postCity = asyncWrapper(
 
     if (!user) return next(new AppError(404, "fail", "User Not Found"));
 
+    
     user?.cities.push(newCity);
     await user?.save();
 

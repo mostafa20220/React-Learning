@@ -7,9 +7,8 @@ import Button from "../components/Button";
 import Message from "../components/Message";
 
 export default function Login() {
-  // PRE-FILL FOR DEV PURPOSES
-  const [email, setEmail] = useState("mostafa@example.com");
-  const [password, setPassword] = useState("passwordd");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [error, setError] = useState(null);
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -27,8 +26,6 @@ export default function Login() {
   useEffect(() => {
     if (isAuthenticated) navigate("/app", { replace: true });
   }, [isAuthenticated]);
-
-  // if (isAuthenticated) return null;
 
   return (
     <main className={styles.login}>

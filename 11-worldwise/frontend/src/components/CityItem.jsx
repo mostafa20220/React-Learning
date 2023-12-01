@@ -3,12 +3,18 @@ import styles from "./CityItem.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { useCities } from "../contexts/CitiesContext";
 
-const formatDate = (date) =>
-  new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
+const formatDate = (date) => {
+  try {
+    return new Intl.DateTimeFormat("en", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(date));
+  } catch (err) {
+    console.error(err);
+    return date;
+  }
+};
 
 export default function CityItem({ city }) {
   const { cityName, emoji, date, position, _id } = city;
