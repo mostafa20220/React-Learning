@@ -99,7 +99,7 @@ function Form() {
       className={` ${styles.form} ${isCityLoading ? styles.loading : ""} `}
       onSubmit={handleSubmit}
     >
-      <div className={styles.col}>
+      <div style={{position: "relative"}} className={styles.col}>
         <label htmlFor="cityName">City name</label>
         <input
           id="cityName"

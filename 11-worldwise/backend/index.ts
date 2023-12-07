@@ -2,7 +2,7 @@ require("dotenv").config();
 import fs from "fs";
 import path from "path";
 import http from "http";
-import https from "https";
+// import https from "https";
 import cors from "cors";
 import morgan from "morgan";
 import mongoose from "mongoose";
@@ -14,10 +14,6 @@ import { AppError, createRes } from "./src/utils/helpers";
 import { usersRouter } from "./src/routers/users.router";
 import { authRouter } from "./src/routers/auth.router";
 
-// const options = {
-// key: fs.readFileSync('localhost-key.pem'),
-// cert: fs.readFileSync('localhost.pem'),
-// };
 
 const app = express();
 
@@ -49,7 +45,6 @@ app.use(
 );
 
 // app.use(cors({ credentials: true, origin: "https://localhost:5173" }));
-
 
 // Routers
 app.use("/api/cities", citiesRouter);

@@ -5,23 +5,22 @@ import Logo from "./Logo";
 
 export default function PageNav() {
   return (
-    <div>
-      <nav className={styles.nav}>
+    <nav className={styles.nav}>
+      <Logo />
 
-        <Logo/>
-
-        <ul style={{listStyle:"none",display:"flex", gap:"2rem"}}>
-          <li>
-            <NavLink to="/product">Product</NavLink>
-          </li>
-          <li>
-            <NavLink to="/pricing">Pricing</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login" className={styles.ctaLink}>Login</NavLink>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      <ul style={{ listStyle: "none", display: "flex", gap: "2rem" }}>
+        <li>
+          <NavLink to="/product">Product</NavLink>
+        </li>
+        <li>
+          <NavLink to="/pricing">Pricing</NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" className={styles.ctaLink}>
+            Login
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
   );
 }

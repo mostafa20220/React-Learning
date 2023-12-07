@@ -14,12 +14,16 @@
 }
 
 .pricing section {
-  width: clamp(80rem, 80%, 90rem);
-  margin: 6rem auto;
-  display: flex;
-  gap: 7rem;
-  align-items: center;
+  height: 70dvh;
   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7rem;
+
+
+  margin: 6rem auto;
 }
 
 .pricing img {

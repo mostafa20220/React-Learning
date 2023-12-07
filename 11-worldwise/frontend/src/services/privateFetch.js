@@ -1,7 +1,4 @@
 export const BASE_URL = "https://worldwide-server.azurewebsites.net"
-// export const BASE_URL = "https://worldwide-react-app-api.onrender.com";
-// export const BASE_URL = "https://localhost:8080";
-
 export async function privateFetch(url, options, token, refreshFnc) {
   if (token) {
     const tokenHeder = { Authorization: `Bearer ${token}` };

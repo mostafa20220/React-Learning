@@ -1,5 +1,6 @@
-import React from "react";
 import styles from "./CityItem.module.css";
+
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCities } from "../contexts/CitiesContext";
 

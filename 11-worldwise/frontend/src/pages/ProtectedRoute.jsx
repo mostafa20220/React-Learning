@@ -15,5 +15,5 @@ export default function ProtectedRoute({ children }) {
     return () => clearTimeout(id);
   }, [isAuthenticated]);
 
-  return isAuthenticated ? children : Spinner;
+  return isAuthenticated ? children : <Spinner/>;
 }

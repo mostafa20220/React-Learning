@@ -25,7 +25,6 @@ export default function App() {
           <CitiesProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              {/* <Route path="share" element={<Form />} /> */}
               <Route
                 path="app"
                 element={
