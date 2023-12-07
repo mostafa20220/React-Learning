@@ -73,3 +73,31 @@ input:focus {
   padding: 1rem 3rem;
   border-radius: 5px;
 }
+
+@media (max-width: 800px) {
+  
+  html {
+    font-size: 50%;  /* 16 * 50 / 100 = 8 px */
+  }
+  
+}
+
+
+@media (max-width: 500px) {
+  
+  html {
+    font-size: 40%;  /* 16 * 40 / 100 =    */
+  }
+
+}
+
+
+@media (max-width: 340px) {
+  
+  html {
+    /* font-size: 25%;  */
+    font-size: 35%; 
+  }
+
+  
+}

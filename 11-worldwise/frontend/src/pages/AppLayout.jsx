@@ -1,16 +1,21 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar';
-import Map from '../components/Map';
-import styles from './AppLayout.module.css'
-import User from '../components/User';
+import styles from "./AppLayout.module.css";
+
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import Map from "../components/Map";
+import User from "../components/User";
+
+import { SidebarProvider } from "../contexts/SidebarContext";
 
 export default function AppLayout() {
-  
+
   return (
-    <div className={styles.app}>
-      <Sidebar/>
-      <Map/>
-      <User/>
-    </div>
-  )
+    <SidebarProvider>
+      <div className={styles.app}>
+        <Sidebar  />
+        <Map/>
+        <User />
+      </div>
+    </SidebarProvider>
+  );
 }

@@ -26,7 +26,6 @@ export default function Login() {
     login({ email, password });
   }
 
-
   useEffect(() => {
     setError(authError);
   }, [authError]);
@@ -40,58 +39,62 @@ export default function Login() {
     <main className={styles.login}>
       <PageNav />
 
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div className={styles.col}>
-          <label htmlFor="email">Email address</label>
-          <input
-            type="email"
-            id="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError(null);
-            }}
-            value={email}
-            required
-            autoComplete="on"
-          />
-        </div>
-
-        <div className={styles.col}>
-          <label htmlFor="password">Password</label>
-          <input
-            required
-            type="password"
-            id="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError(null);
-            }}
-            value={password}
-          />
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button type="primary" disabled={isLoading}>
-            {isLoading ? "loading..." : "login"}
-          </Button>
-          <p style={{ fontSize: "1.2rem" }}>
-            Don't have an account?{" "}
-            <NavLink
-              style={{
-                color: "var(--color-brand--2)",
-                textDecoration: "none",
-                fontWeight: "bolder",
+      <section>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.col}>
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(null);
               }}
-              to="/register"
-            >
-              Sign Up
-            </NavLink>
-          </p>
-        </div>
+              value={email}
+              required
+              autoComplete="on"
+            />
+          </div>
 
-        {error && <Error message={authError} />}
-        {isLoading && <Spinner />}
-      </form>
+          <div className={styles.col}>
+            <label htmlFor="password">Password</label>
+            <input
+              required
+              type="password"
+              id="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(null);
+              }}
+              value={password}
+            />
+          </div>
+
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <Button type="primary" disabled={isLoading}>
+              {isLoading ? "loading..." : "login"}
+            </Button>
+            <p style={{ fontSize: "1.2rem" }}>
+              Don't have an account?{" "}
+              <NavLink
+                style={{
+                  color: "var(--color-brand--2)",
+                  textDecoration: "none",
+                  fontWeight: "bolder",
+                }}
+                to="/register"
+              >
+                Sign Up
+              </NavLink>
+            </p>
+          </div>
+
+          {error && <Error message={authError} />}
+          {isLoading && <Spinner />}
+        </form>
+      </section>
     </main>
   );
 }

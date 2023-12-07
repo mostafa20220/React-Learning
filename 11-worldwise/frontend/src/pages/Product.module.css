@@ -14,14 +14,15 @@
 }
 
 .product section {
-  width: clamp(80rem, 80%, 90rem);
-  margin: 6rem auto;
+  height: 70dvh;
+  
   display: flex;
   flex-direction: column;
-  /* grid-template-columns: 1fr 1fr; */
-  gap: 7rem;
   align-items: center;
-  /* height: 100dvh; */
+  justify-content: center;
+  gap: 7rem;
+
+  margin: 6rem auto;
 }
 
 .product img {

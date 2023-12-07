@@ -1,5 +1,6 @@
 .sidebar {
-  flex-basis: 56rem;
+  max-width: 56rem;
+  flex: 1;
   background-color: var(--color-dark--1);
   padding: 3rem 5rem 3.5rem 5rem;
 
@@ -7,4 +8,67 @@
   flex-direction: column;
   align-items: center;
   height: 100vh;
+  transition: all 0.6s ease-in-out;
+}
+
+.toggleBtn{
+  display: none;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    position: absolute;
+    bottom: -70dvh;
+    left: 0;
+
+    z-index: 9999;
+
+    padding: 5rem 5rem 2rem 5rem;
+
+
+    max-width: 100%;
+    height: 70dvh;
+    width: 100%;
+  }
+  
+  .toggleBtn {
+    display: block;
+    z-index: 1000;
+    position: absolute;
+    top: -5rem;
+    
+    
+    border: none;
+    
+    font-size: 4rem;
+    border-radius: 2rem;
+    
+    width: 8rem;
+    height: auto;
+    padding: 0 0 1rem 0;
+    
+    color: var(--color-brand--2);
+    background-color: var(--color-dark--1);
+    opacity: 0.8;
+    
+    transition: all 1.0s ease-out;
+  }
+  
+  .toggleBtn:hover {
+    opacity: 1;
+  }
+  
+  
+  .toggleBtn.active {
+    top:0;
+    padding: 0 0 0 0;
+    background-color: var(--color-dark--2);
+    color: var(--color-brand--1);
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+  
+  .sidebar.active {
+    bottom: 0dvh;
+  }
 }

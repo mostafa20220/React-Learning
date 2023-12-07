@@ -5,6 +5,17 @@
   height: 100vh;
 }
 
+section{
+  display: flex;
+  flex-direction: column;
+  height: 70dvh;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  
+  text-align: center;
+}
+
 .register {
   /* margin: 2.5rem; */
   padding: 2.5rem 5rem;

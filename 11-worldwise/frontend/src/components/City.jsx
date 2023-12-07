@@ -1,12 +1,10 @@
 import { useParams, useSearchParams } from "react-router-dom";
 
 import styles from "./City.module.css";
-import button from "./Button.module.css";
 import { useCities } from "../contexts/CitiesContext";
 import { useEffect } from "react";
 import Spinner from "./Spinner";
 import { BackButton } from "./BackButton";
-// import ButtonBack from "./ButtonBack";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -25,13 +23,17 @@ function City() {
       await getCityById(id);
     };
     fetchCity();
-  }, [id]); 
+  }, [id, currentCity]); 
+
+
+  if (isLoading || !currentCity) {
+    return <Spinner />;
+  }
+
+  //TODO: handle the bug when the loading or refreshing something like that: "https://localhost:5173/app/cities/6572046372739e13c84613c1?lat=29.9772568&lng=31.2511796"
 
   const { cityName, emoji, date, notes } = currentCity;
 
-  if (isLoading) {
-    return <Spinner />;
-  }
 
   return (
     <div className={styles.city}>

@@ -3,6 +3,29 @@
   height: 100%;
   background-color: var(--color-dark--2);
   position: relative;
+  transition: all 0.5s ease-in-out;
+}
+
+
+@media screen and (max-width: 700px) {
+  .mapContainer {
+    height: 100dvh;
+    flex: 1;
+  }
+  
+  .mapContainer.active {
+    /* flex-grow: 1; */
+    flex: 0 1 30dvh; ;
+    /* height: 30dvh; */
+    transition: all 0.7s ease-in-out;
+  }
+  
+  .mapContainer.active button {
+    /* transform: rotate(180deg); */
+    /* transform: translate(-50%,-200%); */
+    transition: all 1.0s ease-out;
+  }
+  
 }
 
 .map {

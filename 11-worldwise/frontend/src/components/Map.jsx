@@ -1,6 +1,7 @@
+import styles from "./Map.module.css";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Map.module.css";
 import Button from "./Button";
 import { useCities } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeolocation";
@@ -14,15 +15,20 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import { useAuth } from "../contexts/AuthContext";
+import { useSidebar } from "../contexts/SidebarContext";
 
 export default function Map() {
   const [lat, lng] = useUrlPosition();
   const [mapCenter, setMapCenter] = useState([lat || 51.505, lng || -0.09]);
   const [isMapClicked, setIsMapClicked] = useState(false);
-  const {isAuthenticated} = useAuth();
-  const { cities } = useCities();
-  const navigate = useNavigate();
 
+  const { isAuthenticated } = useAuth();
+  const { cities } = useCities();
+  const { isSidebarOpen, setIsSidebarOpen, toggleSidebar } = useSidebar();
+
+  const [vKey, setVKey] = useState(0);
+
+  const navigate = useNavigate();
 
   const {
     position: geolocationPosition,
@@ -38,15 +44,44 @@ export default function Map() {
     setIsMapClicked(false);
   }, [lat, lng]);
 
+  useEffect(() => {
+    // invalidate react-leaflet map size
+    const id = setTimeout(() => setVKey(isSidebarOpen), 600);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, [isSidebarOpen]);
+
   function cbOnSuccess(lat, lng) {
     navigate(`form?lat=${lat}&lng=${lng}`);
   }
 
   return (
-    <div className={styles.mapContainer}>
-      {!geolocationPosition && isAuthenticated && (
-        <Button type="position" onClick={getPosition}>
-          {isGeolocationLoading ? "Loading..." : "Use Your current location"}
+    <div
+      className={`${styles.mapContainer} ${
+        isSidebarOpen ? styles.active : ""
+      } `}
+    >
+      {/* {!geolocationPosition && isAuthenticated && ( */}
+      {isAuthenticated && (
+        <Button
+          type="position"
+          onClick={() => {
+            getPosition();
+            !isSidebarOpen && toggleSidebar();
+          }}
+          style={isGeolocationLoading ? { backgroundColor: "#aeaed0" } : {}}
+          className={styles.active}
+        >
+          {/* {isGeolocationLoading ? "Loading..." : "Use Your current location"} */}
+
+          <img
+            width="25"
+            height="25"
+            src="https://img.icons8.com/external-gliphyline-royyan-wijaya/64/external-gps-riot-van-gliphyline-royyan-wijaya-4.png"
+            alt="loc."
+          />
         </Button>
       )}
       <MapContainer
@@ -54,9 +89,11 @@ export default function Map() {
         zoom={5}
         scrollWheelZoom={true}
         className={styles.map}
+        renderer={isSidebarOpen}
+        key={vKey}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
         {cities.map((city) => (
@@ -73,10 +110,13 @@ export default function Map() {
             </Popup>
           </Marker>
         ))}
-        {
-          isAuthenticated &&
-        <DetectMapClicks setIsMapClicked={setIsMapClicked} />
-        }
+        {isAuthenticated && (
+          <DetectMapClicks
+            toggleSidebar={toggleSidebar}
+            isSidebarOpen={isSidebarOpen}
+            setIsMapClicked={setIsMapClicked}
+          />
+        )}
         <ChangeMapCenter
           mapCenter={mapCenter}
           isMapClicked={isMapClicked}
@@ -88,10 +128,17 @@ export default function Map() {
   );
 }
 
-function DetectMapClicks({ setIsMapClicked }) {
+function DetectMapClicks({ isSidebarOpen, toggleSidebar, setIsMapClicked }) {
   const navigate = useNavigate();
   useMapEvents({
     click: (e) => {
+      if(window.innerWidth <= 700){
+        toggleSidebar();
+        if (isSidebarOpen) {
+          setIsMapClicked(false);
+          return;
+        }
+      }
       setIsMapClicked(true);
       navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
     },
@@ -108,7 +155,10 @@ function ChangeMapCenter({
   const map = useMap();
   if (!isMapClicked) map.setView(mapCenter);
   else {
+    console.log("map clicked, centering...");
     setMapCenter(map.getCenter());
+    // test
+    // window.innerWidth <= 700 && map.setView(mapCenter);
   }
   setIsMapClicked(false);
   return null;
