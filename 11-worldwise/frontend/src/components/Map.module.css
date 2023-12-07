@@ -9,14 +9,13 @@
 
 @media screen and (max-width: 700px) {
   .mapContainer {
-    height: 100dvh;
+    height: 100lvh;
     flex: 1;
   }
   
   .mapContainer.active {
     /* flex-grow: 1; */
-    flex: 0 1 30dvh; ;
-    /* height: 30dvh; */
+    flex: 0 1 30lvh; ;
     transition: all 0.7s ease-in-out;
   }
   
