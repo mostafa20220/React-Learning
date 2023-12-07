@@ -155,10 +155,7 @@ function ChangeMapCenter({
   const map = useMap();
   if (!isMapClicked) map.setView(mapCenter);
   else {
-    console.log("map clicked, centering...");
     setMapCenter(map.getCenter());
-    // test
-    // window.innerWidth <= 700 && map.setView(mapCenter);
   }
   setIsMapClicked(false);
   return null;
