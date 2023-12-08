@@ -13,6 +13,20 @@
   gap: 4rem;
 }
 
+@media screen and (max-width: 500px) {
+  .nav ul {
+    gap: 2rem;
+  }
+  
+}
+
+@media screen and (max-width: 340px) {
+  .nav ul {
+    gap: 1rem;
+  }
+  
+}
+
 .nav a:link,
 .nav a:visited {
   text-decoration: none;

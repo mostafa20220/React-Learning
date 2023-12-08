@@ -46,7 +46,8 @@ app.use(morgan("dev"));
 //   })
 // );
 
-app.use(cors({ credentials: true, origin: "https://localhost:5173" }));
+app.use(cors({ credentials: true, origin: ["https://localhost:5173","http://192.168.1.2"] }));
+// app.use(cors({ credentials: true, origin: "htt" }));
 
 // Routers
 app.use("/api/cities", citiesRouter);
