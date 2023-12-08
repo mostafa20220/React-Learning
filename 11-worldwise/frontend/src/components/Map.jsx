@@ -20,6 +20,7 @@ import { useSidebar } from "../contexts/SidebarContext";
 export default function Map() {
   const [lat, lng] = useUrlPosition();
   const [mapCenter, setMapCenter] = useState([lat || 51.505, lng || -0.09]);
+  // const [zoom, setZoom] = useState(5);
   const [isMapClicked, setIsMapClicked] = useState(false);
 
   const { isAuthenticated } = useAuth();
@@ -89,8 +90,9 @@ export default function Map() {
         zoom={5}
         scrollWheelZoom={true}
         className={styles.map}
-        renderer={isSidebarOpen}
-        key={vKey}
+         key={vKey}
+         zoomControl={document.innerWidth > 700}
+         
       >
         <TileLayer
           // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

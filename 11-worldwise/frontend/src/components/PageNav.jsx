@@ -8,7 +8,7 @@ export default function PageNav() {
     <nav className={styles.nav}>
       <Logo />
 
-      <ul style={{ listStyle: "none", display: "flex", gap: "2rem" }}>
+      <ul>
         <li>
           <NavLink to="/product">Product</NavLink>
         </li>

@@ -12,6 +12,29 @@
   padding: 2.5rem 5rem;
 }
 
+@media  screen and (max-width: 700px) {
+  .homepage {
+    padding: 2.5rem;
+  }
+  
+}
+
+@media  screen and (max-width: 500px) {
+  .homepage {
+    padding: 2rem;
+  }
+  
+}
+@media  screen and (max-width: 340px) {
+  .homepage {
+    padding: 1.5rem;
+  }
+  
+}
+
+
+
+
 .homepage section {
   display: flex;
   flex-direction: column;
