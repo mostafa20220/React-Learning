@@ -3,6 +3,7 @@
   padding: 2.5rem 5rem;
   background-color: var(--color-dark--1);
   height: 100vh;
+  height: 100svh;
 
   background-image: linear-gradient(
       rgba(36, 42, 46, 0.8),
@@ -35,7 +36,8 @@
 
 
 .pricing section {
-  height: 70dvh;
+  height: 70vh;
+  height: 70svh;
   
   display: flex;
   flex-direction: column;
